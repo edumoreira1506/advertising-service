@@ -1,11 +1,11 @@
 import express from 'express'
 import { withBodyValidation } from '@cig-platform/core'
 
-import UserController from '@Controllers/UserController'
-import { storeUserSchema } from '@Schemas/UserSchemas'
+import MerchantController from '@Controllers/MerchantController'
+import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 
 const router = express.Router()
 
-router.post('/users', withBodyValidation(storeUserSchema), UserController.store)
+router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantController.store)
 
 export default router
