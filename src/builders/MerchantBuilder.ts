@@ -15,7 +15,7 @@ export default class BreederBuilder {
   async validate() {
     const merchantWithSameExternalId = await this._repository.findByExternalId(this._externalId)
 
-    if (merchantWithSameExternalId) {
+    if (merchantWithSameExternalId.length) {
       throw new ValidationError(i18n.__('merchant.errors.duplicated-external-id'))
     }
   }

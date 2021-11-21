@@ -28,7 +28,7 @@ describe('Merchant actions', () => {
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
-        findByExternalId: jest.fn().mockResolvedValue(undefined)
+        findByExternalId: jest.fn().mockResolvedValue([])
       })
 
       const response = await request(App).post('/v1/merchants').send({
@@ -68,7 +68,7 @@ describe('Merchant actions', () => {
     it('is an invalid merchant when external id is duplicated', async () => {
       const mockSave = jest.fn()
       const merchant = merchantFactory()
-      const mockFindByExternalId = jest.fn().mockResolvedValue(merchant)
+      const mockFindByExternalId = jest.fn().mockResolvedValue([merchant])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,

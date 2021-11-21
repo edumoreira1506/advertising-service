@@ -12,6 +12,7 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
     super(repository)
 
     this.store = this.store.bind(this)
+    this.index = this.index.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -23,6 +24,14 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
     const merchant = await this.repository.save(merchantDTO)
 
     return BaseController.successResponse(res, { merchant, message: i18n.__('messages.success') })
+  }
+
+  @BaseController.errorHandler()
+  async index(req: Request, res: Response): Promise<Response> {
+    const externalId = req.query.externalId
+    const merchants = await this.repository.findByExternalId(externalId?.toString())
+
+    return BaseController.successResponse(res, { merchants })
   }
 }
 
