@@ -8,4 +8,6 @@ const router = express.Router()
 
 router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantController.store)
 
+router.get('/merchants', MerchantController.index)
+
 export default router

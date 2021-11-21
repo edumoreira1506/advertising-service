@@ -8,7 +8,13 @@ const userDocs = {
       title: 'Register merchant',
       description: 'Register merchant endpoint',
       objectSchema: storeMerchantSchema
-    } 
+    },
+    {
+      method: 'get',
+      title: 'Get merchants',
+      description: 'Search merchants endpoint',
+      queryParams: [{ type: 'string', name: 'externalId' }]
+    }
   ])
 }
 

@@ -4,6 +4,7 @@ import { merchantFactory } from '@cig-platform/factories'
 
 import App from '@Configs/server'
 import i18n from '@Configs/i18n'
+import Merchant from '@Entities/MerchantEntity'
 
 jest.mock('typeorm', () => ({
   createConnection: jest.fn().mockResolvedValue({}),
@@ -28,7 +29,7 @@ describe('Merchant actions', () => {
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
-        findByExternalId: jest.fn().mockResolvedValue(undefined)
+        findByExternalId: jest.fn().mockResolvedValue([])
       })
 
       const response = await request(App).post('/v1/merchants').send({
@@ -68,7 +69,7 @@ describe('Merchant actions', () => {
     it('is an invalid merchant when external id is duplicated', async () => {
       const mockSave = jest.fn()
       const merchant = merchantFactory()
-      const mockFindByExternalId = jest.fn().mockResolvedValue(merchant)
+      const mockFindByExternalId = jest.fn().mockResolvedValue([merchant])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
@@ -89,6 +90,27 @@ describe('Merchant actions', () => {
       })
       expect(mockSave).not.toHaveBeenCalled()
       expect(mockFindByExternalId).toHaveBeenCalledWith(merchant.externalId)
+    })
+  })
+
+  describe('Index', () => {
+    it('returns all merchants', async () => {
+      const merchants: Merchant[] = []
+      const mockFindByExternalId =jest.fn().mockResolvedValue(merchants) 
+      const externalId = 'mock external id'
+
+      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
+        findByExternalId: mockFindByExternalId
+      })
+
+      const response = await request(App).get(`/v1/merchants?externalId=${externalId}`)
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toMatchObject({
+        ok: true,
+        merchants
+      })
+      expect(mockFindByExternalId).toHaveBeenCalledWith(externalId)
     })
   })
 })

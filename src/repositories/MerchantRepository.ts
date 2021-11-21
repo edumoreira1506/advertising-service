@@ -5,7 +5,10 @@ import Merchant from '@Entities/MerchantEntity'
 
 @EntityRepository(Merchant)
 export default class MerchantRepository extends BaseRepository<Merchant> {
-  findByExternalId(externalId: string) {
-    return this.findOne({ externalId, active: true })
+  findByExternalId(externalId?: string) {
+    return this.find({
+      ...(externalId ? { externalId } : {}),
+      active: true,
+    })
   }
 }
