@@ -16,7 +16,7 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
 
   @BaseController.errorHandler()
   async store(req: Request, res: Response): Promise<Response> {
-    const merchantDTO = new MerchantBuilder()
+    const merchantDTO = await new MerchantBuilder(this.repository)
       .setExternalId(req.body.externalId)
       .build()
 

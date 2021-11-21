@@ -28,6 +28,7 @@ describe('Merchant actions', () => {
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
+        findByExternalId: jest.fn().mockResolvedValue(undefined)
       })
 
       const response = await request(App).post('/v1/merchants').send({
@@ -62,6 +63,32 @@ describe('Merchant actions', () => {
         ok: false,
       })
       expect(mockSave).not.toHaveBeenCalled()
+    })
+
+    it('is an invalid merchant when external id is duplicated', async () => {
+      const mockSave = jest.fn()
+      const merchant = merchantFactory()
+      const mockFindByExternalId = jest.fn().mockResolvedValue(merchant)
+
+      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
+        save: mockSave,
+        findByExternalId: mockFindByExternalId
+      })
+
+      const response = await request(App).post('/v1/merchants').send({
+        externalId: merchant.externalId
+      })
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toMatchObject({
+        error: {
+          name: 'ValidationError',
+          message: i18n.__('merchant.errors.duplicated-external-id')
+        },
+        ok: false,
+      })
+      expect(mockSave).not.toHaveBeenCalled()
+      expect(mockFindByExternalId).toHaveBeenCalledWith(merchant.externalId)
     })
   })
 })

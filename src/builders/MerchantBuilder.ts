@@ -1,7 +1,24 @@
+import { ValidationError } from '@cig-platform/core'
+
+import i18n from '@Configs/i18n'
 import Merchant from '@Entities/MerchantEntity'
+import MerchantRepository from '@Repositories/MerchantRepository'
 
 export default class BreederBuilder {
   private _externalId = '';
+  private _repository: MerchantRepository;
+
+  constructor(merchantRepository: MerchantRepository) {
+    this._repository = merchantRepository
+  }
+
+  async validate() {
+    const merchantWithSameExternalId = await this._repository.findByExternalId(this._externalId)
+
+    if (merchantWithSameExternalId) {
+      throw new ValidationError(i18n.__('merchant.errors.duplicated-external-id'))
+    }
+  }
 
   setExternalId(externalId: string) {
     this._externalId = externalId
@@ -9,7 +26,9 @@ export default class BreederBuilder {
     return this
   }
 
-  build = () => {
+  build = async () => {
+    await this.validate()
+
     const merchant = new Merchant()
 
     merchant.externalId = this._externalId
