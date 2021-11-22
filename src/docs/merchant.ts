@@ -1,4 +1,5 @@
 import { createDoc } from '@cig-platform/docs'
+import { storeAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 
 const userDocs = {
@@ -15,7 +16,17 @@ const userDocs = {
       description: 'Search merchants endpoint',
       queryParams: [{ type: 'string', name: 'externalId' }]
     }
-  ])
+  ]),
+  ...createDoc('/merchants/{merchantId}/advertisings', ['Advertising'], [
+    {
+      method: 'post',
+      title: 'Register advertising',
+      description: 'Register advertising endpoint',
+      objectSchema: storeAdvertisingSchema
+    }
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }]
+  })
 }
 
 export default userDocs
