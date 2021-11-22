@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import Advertising from './AdvertisingEntity'
 
 @Entity('merchants')
 export default class Merchant {
@@ -10,4 +11,7 @@ export default class Merchant {
 
   @Column('boolean')
   active: boolean;
+
+  @OneToMany(() => Advertising, advertising => advertising.merchant)
+  advertisings?: Advertising[];
 }
