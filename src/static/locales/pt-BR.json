@@ -10,5 +10,6 @@
 	"merchant.errors.duplicated-external-id": "ExternalID já está em uso",
 	"advertising.fields.price": "Preço",
 	"advertising.errors.invalid-price": "Preço inválido",
-	"advertising.errors.duplicated-external-id": "ExternalID já está em uso"
+	"advertising.errors.duplicated-external-id": "ExternalID já está em uso",
+	"errors.not-found": "errors.not-found"
 }
