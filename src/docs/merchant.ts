@@ -23,10 +23,15 @@ const userDocs = {
       title: 'Register advertising',
       description: 'Register advertising endpoint',
       objectSchema: storeAdvertisingSchema
+    },
+    {
+      method: 'get',
+      title: 'Get advertisings',
+      description: 'Get advertisings endpoint'
     }
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
-  })
+  }),
 }
 
 export default userDocs
