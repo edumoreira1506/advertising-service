@@ -4,6 +4,7 @@ import { advertisingFactory, merchantFactory } from '@cig-platform/factories'
 
 import App from '@Configs/server'
 import i18n from '@Configs/i18n'
+import Advertising from '@Entities/AdvertisingEntity'
 
 jest.mock('typeorm', () => ({
   createConnection: jest.fn().mockResolvedValue({}),
@@ -168,6 +169,29 @@ describe('Advertising actions', () => {
       })
       expect(mockFindByExternalId).not.toHaveBeenCalled()
       expect(mockSave).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Index', () => {
+    it('returns all advertisings', async () => {
+      const advertisings: Advertising[] = []
+      const merchant = merchantFactory()
+      const mockFindByExternalId =jest.fn().mockResolvedValue(advertisings) 
+      const externalId = 'mock external id'
+
+      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
+        findByExternalId: mockFindByExternalId,
+        findById: jest.fn().mockResolvedValue(merchant)
+      })
+
+      const response = await request(App).get(`/v1/merchants/${merchant.id}/advertisings?externalId=${externalId}`)
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toMatchObject({
+        ok: true,
+        advertisings
+      })
+      expect(mockFindByExternalId).toHaveBeenCalledWith(externalId)
     })
   })
 })
