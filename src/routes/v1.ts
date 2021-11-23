@@ -22,4 +22,6 @@ router.post(
   AdvertisingController.store
 )
 
+router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
+
 export default router
