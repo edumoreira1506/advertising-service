@@ -27,7 +27,8 @@ const merchantDocs = {
     {
       method: 'get',
       title: 'Get advertisings',
-      description: 'Get advertisings endpoint'
+      description: 'Get advertisings endpoint',
+      queryParams: [{ type: 'string', name: 'externalId' }]
     }
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
