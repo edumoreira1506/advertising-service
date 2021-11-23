@@ -2,7 +2,7 @@ import { createDoc } from '@cig-platform/docs'
 import { storeAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 
-const userDocs = {
+const merchantDocs = {
   ...createDoc('/merchants', ['Merchant'], [
     {
       method: 'post',
@@ -34,4 +34,4 @@ const userDocs = {
   }),
 }
 
-export default userDocs
+export default merchantDocs
