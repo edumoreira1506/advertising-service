@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { ObjectType } from 'typeorm'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
@@ -13,6 +13,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     super(repository)
 
     this.store = this.store.bind(this)
+    this.index = this.index.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -30,6 +31,14 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const advertising = await this.repository.save(advertisingDTO)
 
     return BaseController.successResponse(res, { advertising, message: i18n.__('messages.success') })
+  }
+
+  @BaseController.errorHandler()
+  async index(req: Request, res: Response): Promise<Response> {
+    const externalId = req.query.externalId
+    const advertisings = await this.repository.findByExternalId(externalId?.toString())
+
+    return BaseController.successResponse(res, { advertisings })
   }
 }
 
