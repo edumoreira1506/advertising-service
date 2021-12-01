@@ -5,7 +5,7 @@ import { BaseController, NotFoundError } from '@cig-platform/core'
 import i18n from '@Configs/i18n'
 import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 import Advertising from '@Entities/AdvertisingEntity'
-import { RequestWithMerchant } from '@Types/requests'
+import { RequestWithMerchant, RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingBuilder from '@Builders/AdvertisingBuilder'
 
 class AdvertisingController extends BaseController<Advertising, AdvertisingRepository>  {
@@ -14,6 +14,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
 
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
+    this.remove = this.remove.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -39,6 +40,16 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const advertisings = await this.repository.findByExternalId(externalId?.toString())
 
     return BaseController.successResponse(res, { advertisings })
+  }
+
+  @BaseController.errorHandler()
+  @BaseController.actionHandler(i18n.__('common.deleted'))
+  async remove(req: RequestWithMerchantAndAdvertising) {
+    const advertising = req.advertising
+
+    if (!advertising) throw new NotFoundError()
+
+    await this.repository.deleteById(advertising.id)
   }
 }
 

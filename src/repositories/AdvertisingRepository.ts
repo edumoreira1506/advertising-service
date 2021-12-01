@@ -11,4 +11,8 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
       active: true,
     })
   }
+
+  deleteById(id: string) {
+    return this.updateById(id, { active: false })
+  }
 }
