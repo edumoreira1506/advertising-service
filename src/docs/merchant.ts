@@ -42,6 +42,15 @@ const merchantDocs = {
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
   }),
+  ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}', ['Advertising'], [
+    {
+      method: 'delete',
+      title: 'Remove advertising',
+      description: 'Remove advertising endpoint',
+    },
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
+  }),
 }
 
 export default merchantDocs
