@@ -17,6 +17,15 @@ const merchantDocs = {
       queryParams: [{ type: 'string', name: 'externalId' }]
     }
   ]),
+  ...createDoc('/merchants/{merchantId}/rollback', ['Merchant'], [
+    {
+      method: 'post',
+      title: 'Rollback merchant register',
+      description: 'Register merchant endpoint',
+    },
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }]
+  }),
   ...createDoc('/merchants/{merchantId}/advertisings', ['Advertising'], [
     {
       method: 'post',

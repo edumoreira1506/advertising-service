@@ -22,6 +22,12 @@ router.post(
   AdvertisingController.store
 )
 
+router.post(
+  '/merchants/:merchantId/rollback',
+  withMerchantParam,
+  MerchantController.rollback
+)
+
 router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
 
 export default router
