@@ -2,12 +2,13 @@ import express from 'express'
 import { withBodyValidation } from '@cig-platform/core'
 
 import MerchantController from '@Controllers/MerchantController'
+import AdvertisingController from '@Controllers/AdvertisingController'
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 import { storeAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
-import AdvertisingController from '@Controllers/AdvertisingController'
+import withAdvertisingParam from '@Middlewares/withAdvertisingParam'
 
 const router = express.Router()
 
@@ -29,5 +30,12 @@ router.post(
 )
 
 router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
+
+router.delete(
+  '/merchants/:merchantId/advertisings/:advertisingId',
+  withMerchantParam,
+  withAdvertisingParam,
+  AdvertisingController.remove
+)
 
 export default router
