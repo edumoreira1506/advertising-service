@@ -17,16 +17,16 @@ router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantContr
 router.get('/merchants', MerchantController.index)
 
 router.post(
+  '/merchants/:merchantId/rollback',
+  withMerchantParam,
+  MerchantController.rollback
+)
+
+router.post(
   '/merchants/:merchantId/advertisings',
   withMerchantParam,
   withBodyValidation(storeAdvertisingSchema),
   AdvertisingController.store
-)
-
-router.post(
-  '/merchants/:merchantId/rollback',
-  withMerchantParam,
-  MerchantController.rollback
 )
 
 router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
