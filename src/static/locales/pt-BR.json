@@ -14,5 +14,6 @@
 	"errors.not-found": "Recurso não encontrado",
 	"rollback.errors.expired": "Tempo do rollback ultrapassado",
 	"messages.removed": "Excluído com sucesso",
-	"common.deleted": "Excluído com sucesso"
+	"common.deleted": "Excluído com sucesso",
+	"common.updated": "Atualizado com sucesso"
 }
