@@ -1,5 +1,5 @@
 import { createDoc } from '@cig-platform/docs'
-import { storeAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
+import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 
 const merchantDocs = {
@@ -47,6 +47,12 @@ const merchantDocs = {
       method: 'delete',
       title: 'Remove advertising',
       description: 'Remove advertising endpoint',
+    },
+    {
+      method: 'patch',
+      title: 'Update advertising',
+      description: 'Update advertising endpoint',
+      objectSchema: updateAdvertisingSchema
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
