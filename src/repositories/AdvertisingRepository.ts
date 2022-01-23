@@ -3,11 +3,17 @@ import { BaseRepository } from '@cig-platform/core'
 
 import Advertising from '@Entities/AdvertisingEntity'
 
+type SearchParams = {
+  externalId?: string;
+  merchantId?: string;
+}
+
 @EntityRepository(Advertising)
 export default class AdvertisingRepository extends BaseRepository<Advertising> {
-  findByExternalId(externalId?: string) {
+  search({ externalId, merchantId }: SearchParams = {}) {
     return this.find({
       ...(externalId ? { externalId } : {}),
+      ...(merchantId ? { merchantId } : {}),
       active: true,
     })
   }
