@@ -29,12 +29,12 @@ describe('Advertising actions', () => {
       const advertising = advertisingFactory()
       const merchant = merchantFactory()
       const mockFindById = jest.fn().mockResolvedValue(merchant)
-      const mockFindByExternalId = jest.fn().mockResolvedValue([])
+      const mockSearch = jest.fn().mockResolvedValue([])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
         findById: mockFindById,
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
       })
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
@@ -47,7 +47,7 @@ describe('Advertising actions', () => {
         message: i18n.__('messages.success'),
         ok: true,
       })
-      expect(mockFindByExternalId).toHaveBeenLastCalledWith(advertising.externalId)
+      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId})
       expect(mockSave).toHaveBeenCalledWith(expect.objectContaining({
         externalId: advertising.externalId,
         price: advertising.price,
@@ -59,12 +59,12 @@ describe('Advertising actions', () => {
       const advertising = advertisingFactory()
       const merchant = merchantFactory()
       const mockFindById = jest.fn().mockResolvedValue(undefined)
-      const mockFindByExternalId = jest.fn().mockResolvedValue([])
+      const mockSearch = jest.fn().mockResolvedValue([])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
         findById: mockFindById,
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
       })
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
@@ -80,7 +80,7 @@ describe('Advertising actions', () => {
           message: i18n.__('errors.not-found')
         }
       })
-      expect(mockFindByExternalId).not.toHaveBeenCalled()
+      expect(mockSearch).not.toHaveBeenCalled()
       expect(mockSave).not.toHaveBeenCalled()
     })
 
@@ -89,12 +89,12 @@ describe('Advertising actions', () => {
       const advertising = advertisingFactory()
       const merchant = merchantFactory()
       const mockFindById = jest.fn().mockResolvedValue(merchant)
-      const mockFindByExternalId = jest.fn().mockResolvedValue([advertising])
+      const mockSearch = jest.fn().mockResolvedValue([advertising])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
         findById: mockFindById,
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
       })
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
@@ -110,7 +110,7 @@ describe('Advertising actions', () => {
           message: i18n.__('merchant.errors.duplicated-external-id')
         }
       })
-      expect(mockFindByExternalId).toHaveBeenLastCalledWith(advertising.externalId)
+      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId })
       expect(mockSave).not.toHaveBeenCalled()
     })
 
@@ -119,12 +119,12 @@ describe('Advertising actions', () => {
       const advertising = advertisingFactory()
       const merchant = merchantFactory()
       const mockFindById = jest.fn().mockResolvedValue(merchant)
-      const mockFindByExternalId = jest.fn().mockResolvedValue([])
+      const mockSearch = jest.fn().mockResolvedValue([])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
         findById: mockFindById,
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
       })
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
@@ -139,7 +139,7 @@ describe('Advertising actions', () => {
         },
         ok: false,
       })
-      expect(mockFindByExternalId).not.toHaveBeenCalled()
+      expect(mockSearch).not.toHaveBeenCalled()
       expect(mockSave).not.toHaveBeenCalled()
     })
 
@@ -148,12 +148,12 @@ describe('Advertising actions', () => {
       const advertising = advertisingFactory()
       const merchant = merchantFactory()
       const mockFindById = jest.fn().mockResolvedValue(merchant)
-      const mockFindByExternalId = jest.fn().mockResolvedValue([])
+      const mockSearch = jest.fn().mockResolvedValue([])
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
         save: mockSave,
         findById: mockFindById,
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
       })
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
@@ -168,7 +168,7 @@ describe('Advertising actions', () => {
         },
         ok: false,
       })
-      expect(mockFindByExternalId).not.toHaveBeenCalled()
+      expect(mockSearch).not.toHaveBeenCalled()
       expect(mockSave).not.toHaveBeenCalled()
     })
   })
@@ -177,11 +177,11 @@ describe('Advertising actions', () => {
     it('returns all advertisings', async () => {
       const advertisings: Advertising[] = []
       const merchant = merchantFactory()
-      const mockFindByExternalId =jest.fn().mockResolvedValue(advertisings) 
+      const mockSearch =jest.fn().mockResolvedValue(advertisings) 
       const externalId = 'mock external id'
 
       jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        findByExternalId: mockFindByExternalId,
+        search: mockSearch,
         findById: jest.fn().mockResolvedValue(merchant)
       })
 
@@ -192,7 +192,7 @@ describe('Advertising actions', () => {
         ok: true,
         advertisings
       })
-      expect(mockFindByExternalId).toHaveBeenCalledWith(externalId)
+      expect(mockSearch).toHaveBeenCalledWith({ externalId, merchantId: merchant.id })
     })
   })
 })

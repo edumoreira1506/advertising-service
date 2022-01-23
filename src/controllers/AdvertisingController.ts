@@ -15,6 +15,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
     this.remove = this.remove.bind(this)
+    this.update = this.update.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -35,9 +36,26 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
   }
 
   @BaseController.errorHandler()
+  @BaseController.actionHandler(i18n.__('common.updated'))
+  async update(req: RequestWithMerchantAndAdvertising) {
+    const advertising = req.advertising
+    const merchant = req.merchant
+
+    if (!advertising || !merchant) throw new NotFoundError()
+
+    const newPrice = req.body.price
+
+    await this.repository.update({ id: advertising.id }, { price: Number(newPrice) })
+  }
+
+  @BaseController.errorHandler()
   async index(req: Request, res: Response): Promise<Response> {
     const externalId = req.query.externalId
-    const advertisings = await this.repository.findByExternalId(externalId?.toString())
+    const merchantId = req.params.merchantId
+    const advertisings = await this.repository.search({
+      externalId: externalId?.toString(),
+      merchantId
+    })
 
     return BaseController.successResponse(res, { advertisings })
   }

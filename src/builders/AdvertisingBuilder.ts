@@ -16,7 +16,7 @@ export default class AdvertisingBuilder {
   }
 
   async validate() {
-    const advertisingWithSameExternalId = await this._repository.findByExternalId(this._externalId)
+    const advertisingWithSameExternalId = await this._repository.search({ externalId: this._externalId})
 
     if (advertisingWithSameExternalId.length) {
       throw new ValidationError(i18n.__('advertising.errors.duplicated-external-id'))

@@ -5,7 +5,7 @@ import MerchantController from '@Controllers/MerchantController'
 import AdvertisingController from '@Controllers/AdvertisingController'
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
-import { storeAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
+import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam from '@Middlewares/withAdvertisingParam'
@@ -17,19 +17,27 @@ router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantContr
 router.get('/merchants', MerchantController.index)
 
 router.post(
+  '/merchants/:merchantId/rollback',
+  withMerchantParam,
+  MerchantController.rollback
+)
+
+router.post(
   '/merchants/:merchantId/advertisings',
   withMerchantParam,
   withBodyValidation(storeAdvertisingSchema),
   AdvertisingController.store
 )
 
-router.post(
-  '/merchants/:merchantId/rollback',
-  withMerchantParam,
-  MerchantController.rollback
-)
-
 router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
+
+router.patch(
+  '/merchants/:merchantId/advertisings/:advertisingId',
+  withBodyValidation(updateAdvertisingSchema),
+  withMerchantParam,
+  withAdvertisingParam,
+  AdvertisingController.update
+)
 
 router.delete(
   '/merchants/:merchantId/advertisings/:advertisingId',
