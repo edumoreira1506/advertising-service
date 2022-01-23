@@ -44,13 +44,8 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     if (!advertising || !merchant) throw new NotFoundError()
 
     const newPrice = req.body.price
-    const advertisingDTO = await new AdvertisingBuilder(this.repository)
-      .setExternalId(advertising.externalId)
-      .serPrice(newPrice)
-      .setMerchant(merchant)
-      .build()
 
-    await this.repository.update({ id: advertising.id }, advertisingDTO)
+    await this.repository.update({ id: advertising.id }, { price: Number(newPrice) })
   }
 
   @BaseController.errorHandler()
