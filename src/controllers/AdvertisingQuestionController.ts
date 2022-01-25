@@ -13,6 +13,7 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
     super(repository)
 
     this.store = this.store.bind(this)
+    this.index = this.index.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -31,6 +32,18 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
     const advertisingQuestion = await this.repository.save(advertisingQuestionDTO)
 
     return BaseController.successResponse(res, { advertisingQuestion, message: i18n.__('messages.success') })
+  }
+
+  @BaseController.errorHandler()
+  async index(req: RequestWithMerchantAndAdvertising, res: Response) {
+    const advertising = req.advertising
+    const merchant = req.merchant
+
+    if (!advertising || !merchant) throw new NotFoundError()
+
+    const questions = await this.repository.getByAdvertisingId(advertising.id)
+
+    return BaseController.successResponse(res, { questions })
   }
 }
 

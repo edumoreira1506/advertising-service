@@ -65,6 +65,11 @@ const merchantDocs = {
       description: 'Register advertising question endpoint',
       objectSchema: storeAdvertisingQuestionSchema
     },
+    {
+      method: 'get',
+      title: 'Get question and answers',
+      description: 'Get question and answers endpoint',
+    }
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
   }),
