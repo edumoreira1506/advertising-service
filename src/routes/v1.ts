@@ -7,10 +7,11 @@ import AdvertisingQuestionController from '@Controllers/AdvertisingQuestionContr
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
+import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam from '@Middlewares/withAdvertisingParam'
-import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
+import withQuestionParam from '@Middlewares/withQuestionParam'
 
 const router = express.Router()
 
@@ -52,6 +53,15 @@ router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions',
   withMerchantParam,
   withAdvertisingParam,
+  withBodyValidation(storeAdvertisingQuestionSchema),
+  AdvertisingQuestionController.store
+)
+
+router.post(
+  '/merchants/:merchantId/advertisings/:advertisingId/questions/:questionId/answers',
+  withMerchantParam,
+  withAdvertisingParam,
+  withQuestionParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
   AdvertisingQuestionController.store
 )
