@@ -3,13 +3,13 @@ import { Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
-import Advertising from '@Entities/AdvertisingEntity'
+import AdvertisingQuestionAnswerRepository from '@Repositories/AdvertisingQuestionAnswerRepository'
+import AdvertisingQuestionAnswer from '@Entities/AdvertisingQuestionAnswerEntity'
 import { RequestWithMerchantAndAdvertisingAndQuestion } from '@Types/requests'
 import AdvertisingQuestionAnswerBuilder from '@Builders/AdvertisingQuestionAnswerBuilder'
 
-class AdvertisingQuestionAnswerController extends BaseController<Advertising, AdvertisingQuestionRepository>  {
-  constructor(repository: ObjectType<Advertising>) {
+class AdvertisingQuestionAnswerController extends BaseController<AdvertisingQuestionAnswer, AdvertisingQuestionAnswerRepository>  {
+  constructor(repository: ObjectType<AdvertisingQuestionAnswer>) {
     super(repository)
 
     this.store = this.store.bind(this)
@@ -34,4 +34,4 @@ class AdvertisingQuestionAnswerController extends BaseController<Advertising, Ad
   }
 }
 
-export default new AdvertisingQuestionAnswerController(AdvertisingQuestionRepository)
+export default new AdvertisingQuestionAnswerController(AdvertisingQuestionAnswerRepository)

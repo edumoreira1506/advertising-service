@@ -4,6 +4,7 @@ import { withBodyValidation } from '@cig-platform/core'
 import MerchantController from '@Controllers/MerchantController'
 import AdvertisingController from '@Controllers/AdvertisingController'
 import AdvertisingQuestionController from '@Controllers/AdvertisingQuestionController'
+import AdvertisingQuestionAnswerController from '@Controllers/AdvertisingQuestionAnswerController'
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
@@ -63,7 +64,7 @@ router.post(
   withAdvertisingParam,
   withQuestionParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
-  AdvertisingQuestionController.store
+  AdvertisingQuestionAnswerController.store
 )
 
 export default router
