@@ -5,7 +5,7 @@ import { BaseController, NotFoundError } from '@cig-platform/core'
 import i18n from '@Configs/i18n'
 import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
-import { RequestWithMerchantAndAdvertising, RequestWithMerchantAndAdvertisingAndQuestion } from '@Types/requests'
+import { RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingQuestionBuilder from '@Builders/AdvertisingQuestionBuilder'
 
 class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, AdvertisingQuestionRepository>  {
@@ -35,7 +35,7 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
   }
 
   @BaseController.errorHandler()
-  async index(req: RequestWithMerchantAndAdvertisingAndQuestion, res: Response) {
+  async index(req: RequestWithMerchantAndAdvertising, res: Response) {
     const advertising = req.advertising
     const merchant = req.merchant
 
