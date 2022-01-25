@@ -29,6 +29,7 @@ export default class AdvertisingQuestionBuilder {
 
     advertisingQuestion.externalId = this._externalId
     advertisingQuestion.content = this._content
+    advertisingQuestion.advertising = this._advertising
 
     return advertisingQuestion
   }
