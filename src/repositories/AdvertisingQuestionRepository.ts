@@ -8,4 +8,11 @@ export default class AdvertisingQuestionRepository extends BaseRepository<Advert
   deleteById(id: string) {
     return this.updateById(id, { active: false })
   }
+
+  getByAdvertisingId(advertisingId: string) {
+    return this.find({
+      where: { advertisingId },
+      relations: ['answers']
+    })
+  }
 }

@@ -5,7 +5,7 @@ import { BaseController, NotFoundError } from '@cig-platform/core'
 import i18n from '@Configs/i18n'
 import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
-import { RequestWithMerchantAndAdvertising } from '@Types/requests'
+import { RequestWithMerchantAndAdvertising, RequestWithMerchantAndAdvertisingAndQuestion } from '@Types/requests'
 import AdvertisingQuestionBuilder from '@Builders/AdvertisingQuestionBuilder'
 
 class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, AdvertisingQuestionRepository>  {
@@ -13,6 +13,7 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
     super(repository)
 
     this.store = this.store.bind(this)
+    this.index = this.index.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -31,6 +32,18 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
     const advertisingQuestion = await this.repository.save(advertisingQuestionDTO)
 
     return BaseController.successResponse(res, { advertisingQuestion, message: i18n.__('messages.success') })
+  }
+
+  @BaseController.errorHandler()
+  async index(req: RequestWithMerchantAndAdvertisingAndQuestion, res: Response) {
+    const advertising = req.advertising
+    const merchant = req.merchant
+
+    if (!advertising || !merchant) throw new NotFoundError()
+
+    const questions = await this.repository.getByAdvertisingId(advertising.id)
+
+    return BaseController.successResponse(res, { questions })
   }
 }
 

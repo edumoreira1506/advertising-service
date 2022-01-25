@@ -58,6 +58,13 @@ router.post(
   AdvertisingQuestionController.store
 )
 
+router.get(
+  '/merchants/:merchantId/advertisings/:advertisingId/questions',
+  withMerchantParam,
+  withAdvertisingParam,
+  AdvertisingQuestionController.index
+)
+
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions/:questionId/answers',
   withMerchantParam,
