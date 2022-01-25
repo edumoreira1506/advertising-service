@@ -4,10 +4,12 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  CreateDateColumn
+  CreateDateColumn,
+  OneToMany
 } from 'typeorm'
 
 import Advertising from './AdvertisingEntity'
+import AdvertisingQuestionAnswer from './AdvertisingQuestionAnswerEntity'
 
 @Entity('advertising_questions')
 export default class AdvertisingQuestion {
@@ -32,4 +34,7 @@ export default class AdvertisingQuestion {
   @ManyToOne(() => Advertising, advertising => advertising.questions)
   @JoinColumn({ name: 'advertising_id' })
   advertising: Advertising;
+
+  @OneToMany(() => AdvertisingQuestionAnswer, a => a.question)
+  answers?: AdvertisingQuestionAnswer[];
 }

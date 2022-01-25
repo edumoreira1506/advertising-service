@@ -4,12 +4,12 @@ import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
 import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
-import Advertising from '@Entities/AdvertisingEntity'
+import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
 import { RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingQuestionBuilder from '@Builders/AdvertisingQuestionBuilder'
 
-class AdvertisingQuestionController extends BaseController<Advertising, AdvertisingQuestionRepository>  {
-  constructor(repository: ObjectType<Advertising>) {
+class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, AdvertisingQuestionRepository>  {
+  constructor(repository: ObjectType<AdvertisingQuestion>) {
     super(repository)
 
     this.store = this.store.bind(this)

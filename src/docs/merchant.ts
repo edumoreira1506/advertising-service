@@ -68,6 +68,20 @@ const merchantDocs = {
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
   }),
+  ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}/questions/{questionId}/answers', ['Advertising Question Answer'], [
+    {
+      method: 'post',
+      title: 'Register advertising question answer',
+      description: 'Register advertising question answer endpoint',
+      objectSchema: storeAdvertisingQuestionSchema
+    },
+  ], {
+    pathVariables: [
+      { type: 'string', name: 'merchantId' },
+      { type: 'string', name: 'advertisingId' },
+      { type: 'string', name: 'questionId' },
+    ],
+  }),
 }
 
 export default merchantDocs

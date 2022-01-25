@@ -4,13 +4,15 @@ import { withBodyValidation } from '@cig-platform/core'
 import MerchantController from '@Controllers/MerchantController'
 import AdvertisingController from '@Controllers/AdvertisingController'
 import AdvertisingQuestionController from '@Controllers/AdvertisingQuestionController'
+import AdvertisingQuestionAnswerController from '@Controllers/AdvertisingQuestionAnswerController'
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
+import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam from '@Middlewares/withAdvertisingParam'
-import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
+import withQuestionParam from '@Middlewares/withQuestionParam'
 
 const router = express.Router()
 
@@ -54,6 +56,15 @@ router.post(
   withAdvertisingParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
   AdvertisingQuestionController.store
+)
+
+router.post(
+  '/merchants/:merchantId/advertisings/:advertisingId/questions/:questionId/answers',
+  withMerchantParam,
+  withAdvertisingParam,
+  withQuestionParam,
+  withBodyValidation(storeAdvertisingQuestionSchema),
+  AdvertisingQuestionAnswerController.store
 )
 
 export default router
