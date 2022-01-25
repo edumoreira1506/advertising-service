@@ -1,5 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  OneToMany
+} from 'typeorm'
+
 import Merchant from './MerchantEntity'
+import AdvertisingQuestion from './AdvertisingQuestionEntity'
 
 @Entity('advertisings')
 export default class Advertising {
@@ -21,4 +30,7 @@ export default class Advertising {
   @ManyToOne(() => Merchant, merchant => merchant.advertisings)
   @JoinColumn({ name: 'merchant_id' })
   merchant: Merchant;
+
+  @OneToMany(() => AdvertisingQuestion, advertisingQuestion => advertisingQuestion.advertising)
+  questions?: AdvertisingQuestion[];
 }

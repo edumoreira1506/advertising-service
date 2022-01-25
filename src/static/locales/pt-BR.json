@@ -11,6 +11,7 @@
 	"advertising.fields.price": "Preço",
 	"advertising.errors.invalid-price": "Preço inválido",
 	"advertising.errors.duplicated-external-id": "ExternalID já está em uso",
+	"advertising-question.fields.content": "Conteúdo",
 	"errors.not-found": "Recurso não encontrado",
 	"rollback.errors.expired": "Tempo do rollback ultrapassado",
 	"messages.removed": "Excluído com sucesso",
