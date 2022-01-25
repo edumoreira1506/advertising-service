@@ -1,4 +1,5 @@
 import { createDoc } from '@cig-platform/docs'
+import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 
@@ -53,6 +54,16 @@ const merchantDocs = {
       title: 'Update advertising',
       description: 'Update advertising endpoint',
       objectSchema: updateAdvertisingSchema
+    },
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
+  }),
+  ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}/questions', ['Advertising Question'], [
+    {
+      method: 'post',
+      title: 'Register advertising question',
+      description: 'Register advertising question endpoint',
+      objectSchema: storeAdvertisingQuestionSchema
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
