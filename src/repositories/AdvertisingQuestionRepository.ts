@@ -12,7 +12,10 @@ export default class AdvertisingQuestionRepository extends BaseRepository<Advert
   getByAdvertisingId(advertisingId: string) {
     return this.find({
       where: { advertisingId },
-      relations: ['answers']
+      relations: ['answers'],
+      order: {
+        createdAt: 'DESC'
+      }
     })
   }
 }
