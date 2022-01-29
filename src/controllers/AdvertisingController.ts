@@ -16,6 +16,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     this.index = this.index.bind(this)
     this.remove = this.remove.bind(this)
     this.update = this.update.bind(this)
+    this.show = this.show.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -68,6 +69,16 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     if (!advertising) throw new NotFoundError()
 
     await this.repository.deleteById(advertising.id)
+  }
+
+  @BaseController.errorHandler()
+  async show(req: RequestWithMerchantAndAdvertising, res: Response) {
+    const advertising = req.advertising
+    const merchant = req.merchant
+
+    if (!advertising || !merchant) throw new NotFoundError()
+
+    return BaseController.successResponse(res, { advertising })
   }
 }
 

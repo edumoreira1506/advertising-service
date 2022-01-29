@@ -37,6 +37,13 @@ router.post(
 
 router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
 
+router.get(
+  '/merchants/:merchantId/advertisings/:advertisingId',
+  withMerchantParam,
+  withAdvertisingParam,
+  AdvertisingController.show
+)
+
 router.patch(
   '/merchants/:merchantId/advertisings/:advertisingId',
   withBodyValidation(updateAdvertisingSchema),

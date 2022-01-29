@@ -59,6 +59,11 @@ const merchantDocs = {
       description: 'Remove advertising endpoint',
     },
     {
+      method: 'get',
+      title: 'Get advertising',
+      description: 'Get advertising endpoint',
+    },
+    {
       method: 'patch',
       title: 'Update advertising',
       description: 'Update advertising endpoint',
