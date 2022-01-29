@@ -52,6 +52,15 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
 
     await this.repository.delete({ id: merchant.id })
   }
+
+  @BaseController.errorHandler()
+  async show(req: RequestWithMerchant, res: Response): Promise<Response> {
+    const merchant = req.merchant
+
+    if (!merchant) throw new NotFoundError()
+
+    return BaseController.successResponse(res, { merchant })
+  }
 }
 
 export default new MerchantController(MerchantRepository)

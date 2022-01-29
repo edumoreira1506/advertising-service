@@ -20,6 +20,8 @@ router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantContr
 
 router.get('/merchants', MerchantController.index)
 
+router.get('/merchants/:merchantId', withMerchantParam, MerchantController.show)
+
 router.post(
   '/merchants/:merchantId/rollback',
   withMerchantParam,
