@@ -27,6 +27,15 @@ const merchantDocs = {
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
   }),
+  ...createDoc('/merchants/{merchantId}', ['Merchant'], [
+    {
+      method: 'get',
+      title: 'Get merchant',
+      description: 'Get merchant endpoint',
+    },
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }]
+  }),
   ...createDoc('/merchants/{merchantId}/advertisings', ['Advertising'], [
     {
       method: 'post',

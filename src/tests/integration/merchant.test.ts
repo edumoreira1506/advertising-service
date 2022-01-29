@@ -114,4 +114,45 @@ describe('Merchant actions', () => {
       expect(mockFindByExternalId).toHaveBeenCalledWith(externalId)
     })
   })
+
+  describe('Show', () => {
+    it('return the merchant', async () => {
+      const merchant = merchantFactory()
+      const mockFindById =jest.fn().mockResolvedValue(merchant) 
+
+      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
+        findById: mockFindById
+      })
+
+      const response = await request(App).get(`/v1/merchants/${merchant.id}`)
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toMatchObject({
+        ok: true,
+        merchant
+      })
+      expect(mockFindById).toHaveBeenCalledWith(merchant.id)
+    })
+
+    it('returns a not found error', async () => {
+      const merchantId = merchantFactory().id
+      const mockFindById =jest.fn().mockResolvedValue(undefined) 
+
+      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
+        findById: mockFindById
+      })
+
+      const response = await request(App).get(`/v1/merchants/${merchantId}`)
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toMatchObject({
+        error: {
+          name: 'NotFoundError',
+          message: i18n.__('errors.not-found')
+        },
+        ok: false,
+      })
+      expect(mockFindById).toHaveBeenCalledWith(merchantId)
+    })
+  })
 })
