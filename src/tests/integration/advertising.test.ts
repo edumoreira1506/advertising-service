@@ -47,7 +47,7 @@ describe('Advertising actions', () => {
         message: i18n.__('messages.success'),
         ok: true,
       })
-      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId})
+      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId, finished: false })
       expect(mockSave).toHaveBeenCalledWith(expect.objectContaining({
         externalId: advertising.externalId,
         price: advertising.price,
@@ -110,7 +110,7 @@ describe('Advertising actions', () => {
           message: i18n.__('merchant.errors.duplicated-external-id')
         }
       })
-      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId })
+      expect(mockSearch).toHaveBeenLastCalledWith({ externalId: advertising.externalId, finished: false })
       expect(mockSave).not.toHaveBeenCalled()
     })
 

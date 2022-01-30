@@ -24,6 +24,9 @@ export default class Advertising {
   @Column('integer')
   price: number;
 
+  @Column('boolean')
+  finished: boolean;
+
   @Column({ type: 'uuid', name: 'merchant_id'})
   merchantId: string;
 
