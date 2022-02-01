@@ -53,7 +53,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
   @BaseController.errorHandler()
   async index(req: Request, res: Response): Promise<Response> {
     const externalId = req.query.externalId
-    const finished = Boolean(req.query.finished === 'true')
+    const finished = req.query?.finished ? Boolean(req.query.finished === 'true') : undefined
     const merchantId = req.params.merchantId
     const advertisings = await this.repository.search({
       externalId: externalId?.toString(),
