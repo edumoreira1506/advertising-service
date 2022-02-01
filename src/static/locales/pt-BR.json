@@ -16,5 +16,6 @@
 	"rollback.errors.expired": "Tempo do rollback ultrapassado",
 	"messages.removed": "Excluído com sucesso",
 	"common.deleted": "Excluído com sucesso",
-	"common.updated": "Atualizado com sucesso"
+	"common.updated": "Atualizado com sucesso",
+	"errors.finished-advertising": "Anúncio já finalizado"
 }
