@@ -11,7 +11,7 @@ import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/Advert
 import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
-import withAdvertisingParam from '@Middlewares/withAdvertisingParam'
+import withAdvertisingParam, { withUnfinishedAdvertisingParam } from '@Middlewares/withAdvertisingParam'
 import withQuestionParam from '@Middlewares/withQuestionParam'
 
 const router = express.Router()
@@ -62,7 +62,7 @@ router.delete(
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions',
   withMerchantParam,
-  withAdvertisingParam,
+  withUnfinishedAdvertisingParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
   AdvertisingQuestionController.store
 )
@@ -77,7 +77,7 @@ router.get(
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions/:questionId/answers',
   withMerchantParam,
-  withAdvertisingParam,
+  withUnfinishedAdvertisingParam,
   withQuestionParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
   AdvertisingQuestionAnswerController.store
