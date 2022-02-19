@@ -17,5 +17,6 @@
 	"messages.removed": "Excluído com sucesso",
 	"common.deleted": "Excluído com sucesso",
 	"common.updated": "Atualizado com sucesso",
-	"errors.finished-advertising": "Anúncio já finalizado"
+	"errors.finished-advertising": "Anúncio já finalizado",
+	"errors.already-favorited": "Anúncio já foi favoritado"
 }
