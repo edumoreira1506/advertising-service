@@ -1,5 +1,5 @@
 import { ObjectType } from 'typeorm'
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
@@ -14,6 +14,7 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
 
     this.store = this.store.bind(this)
     this.remove = this.remove.bind(this)
+    this.index = this.index.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -43,6 +44,14 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
     if (!advertising || !merchant || !favorite) throw new NotFoundError()
 
     await this.repository.deleteById(favorite.id)
+  }
+
+  @BaseController.errorHandler()
+  async index(req: Request, res: Response) {
+    const externalId = String(req?.query?.externalId ?? '')
+    const favorites = await this.repository.search({ externalId })
+
+    return BaseController.successResponse(res, { favorites })
   }
 }
 
