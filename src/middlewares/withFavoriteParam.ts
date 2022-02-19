@@ -11,7 +11,7 @@ export const withFavoriteParamFactory =
     (req: RequestWithMerchantAndAdvertisingAndFavorite, res: Response, next: NextFunction) => {
       return withRequestParam<AdvertisingFavoriteRepository, AdvertisingFavorite>('favoriteId', 'favorite', AdvertisingFavoriteController, errorCallback)(req, res, () => {
         try {
-          if (!req.advertising || !req.merchant || !req.favorite) throw new NotFoundError()
+          if (!req.advertising || !req.merchant || !req?.favorite?.active) throw new NotFoundError()
           if (req.favorite.advertisingId !== req.advertising.id) throw new AuthError()
 
           next()

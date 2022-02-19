@@ -73,8 +73,8 @@ router.post(
 router.delete(
   '/merchants/:merchantId/advertisings/:advertisingId/favorites/:favoriteId',
   withMerchantParam,
-  withFavoriteParam,
   withUnfinishedAdvertisingParam,
+  withFavoriteParam,
   AdvertisingFavoriteController.remove
 )
 
