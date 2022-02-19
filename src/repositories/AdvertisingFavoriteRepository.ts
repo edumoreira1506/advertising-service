@@ -12,4 +12,8 @@ export default class AdvertisingFavoriteRepository extends BaseRepository<Advert
       where: { externalId, active: true },
     })
   }
+
+  deleteById(id: string) {
+    return this.updateById(id, { active: false })
+  }
 }
