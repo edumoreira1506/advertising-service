@@ -29,7 +29,7 @@ export default class AdvertisingFavoriteBuilder {
       externalId: this._externalId,
     })
 
-    if (favoriteWithSameExternalId) {
+    if (favoriteWithSameExternalId.length) {
       throw new AlreadyFavoritedError()
     }
   }
