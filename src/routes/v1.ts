@@ -70,6 +70,11 @@ router.post(
   AdvertisingFavoriteController.store
 )
 
+router.get(
+  '/favorites',
+  AdvertisingFavoriteController.index
+)
+
 router.delete(
   '/merchants/:merchantId/advertisings/:advertisingId/favorites/:favoriteId',
   withMerchantParam,
