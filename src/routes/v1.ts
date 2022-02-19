@@ -15,6 +15,7 @@ import { storeAdvertisingFavoriteSchema } from '@Schemas/AdvertisingFavoriteSche
 import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam, { withUnfinishedAdvertisingParam } from '@Middlewares/withAdvertisingParam'
 import withQuestionParam from '@Middlewares/withQuestionParam'
+import withFavoriteParam from '@Middlewares/withFavoriteParam'
 
 const router = express.Router()
 
@@ -67,6 +68,14 @@ router.post(
   withUnfinishedAdvertisingParam,
   withBodyValidation(storeAdvertisingFavoriteSchema),
   AdvertisingFavoriteController.store
+)
+
+router.delete(
+  '/merchants/:merchantId/advertisings/:advertisingId/favorites/:favoriteId',
+  withMerchantParam,
+  withFavoriteParam,
+  withUnfinishedAdvertisingParam,
+  AdvertisingFavoriteController.remove
 )
 
 router.post(
