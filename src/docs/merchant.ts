@@ -1,4 +1,5 @@
 import { createDoc } from '@cig-platform/docs'
+import { storeAdvertisingFavoriteSchema } from '@Schemas/AdvertisingFavoriteSchemas'
 import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
@@ -100,6 +101,16 @@ const merchantDocs = {
       { type: 'string', name: 'advertisingId' },
       { type: 'string', name: 'questionId' },
     ],
+  }),
+  ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}/favorites', ['Advertising Favorite'], [
+    {
+      method: 'post',
+      title: 'Register advertising favorite',
+      description: 'Register advertising favorite endpoint',
+      objectSchema: storeAdvertisingFavoriteSchema
+    },
+  ], {
+    pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
   }),
 }
 

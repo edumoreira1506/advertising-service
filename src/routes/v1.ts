@@ -5,10 +5,12 @@ import MerchantController from '@Controllers/MerchantController'
 import AdvertisingController from '@Controllers/AdvertisingController'
 import AdvertisingQuestionController from '@Controllers/AdvertisingQuestionController'
 import AdvertisingQuestionAnswerController from '@Controllers/AdvertisingQuestionAnswerController'
+import AdvertisingFavoriteController from '@Controllers/AdvertisingFavoriteController'
 
 import { storeMerchantSchema } from '@Schemas/MerchantSchemas'
 import { storeAdvertisingSchema, updateAdvertisingSchema } from '@Schemas/AdvertisingSchemas'
 import { storeAdvertisingQuestionSchema } from '@Schemas/AdvertisingQuestionSchemas'
+import { storeAdvertisingFavoriteSchema } from '@Schemas/AdvertisingFavoriteSchemas'
 
 import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam, { withUnfinishedAdvertisingParam } from '@Middlewares/withAdvertisingParam'
@@ -57,6 +59,14 @@ router.delete(
   withMerchantParam,
   withAdvertisingParam,
   AdvertisingController.remove
+)
+
+router.post(
+  '/merchants/:merchantId/advertisings/:advertisingId/favorites',
+  withMerchantParam,
+  withUnfinishedAdvertisingParam,
+  withBodyValidation(storeAdvertisingFavoriteSchema),
+  AdvertisingFavoriteController.store
 )
 
 router.post(
