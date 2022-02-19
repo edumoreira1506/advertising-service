@@ -49,7 +49,7 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
   @BaseController.errorHandler()
   async index(req: Request, res: Response) {
     const externalId = String(req?.query?.externalId ?? '')
-    const favorites = this.repository.search({ externalId })
+    const favorites = await this.repository.search({ externalId })
 
     return BaseController.successResponse(res, { favorites })
   }
