@@ -1,7 +1,6 @@
 import Advertising from '@Entities/AdvertisingEntity'
 import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
 import AlreadyFavoritedError from '@Errors/AlreadyFavoritedError'
-import FinishedAdvertisingError from '@Errors/FinishedAdvertisingError'
 import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
 
 export default class AdvertisingFavoriteBuilder {
@@ -32,10 +31,6 @@ export default class AdvertisingFavoriteBuilder {
 
     if (favoriteWithSameExternalId) {
       throw new AlreadyFavoritedError()
-    }
-
-    if (this._advertising.finished) {
-      throw new FinishedAdvertisingError()
     }
   }
 
