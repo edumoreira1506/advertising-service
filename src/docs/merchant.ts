@@ -125,6 +125,14 @@ const merchantDocs = {
       { type: 'string', name: 'favoriteId' },
     ],
   }),
+  ...createDoc('/favorites', ['Advertising Favorite'], [
+    {
+      method: 'get',
+      title: 'Get advertising favorites',
+      description: 'Get advertising favorites endpoint',
+      queryParams: [{ type: 'string', name: 'externalId' }]
+    },
+  ]),
 }
 
 export default merchantDocs
