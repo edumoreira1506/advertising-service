@@ -28,8 +28,8 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
       active: true,
       ...(sort ? {
         order: {
-          ...(sort === 'MAX_TO_MIN' ? { price: 'ASC' } : {}),
-          ...(sort === 'MIN_TO_MAX' ? { price: 'DESC' } : {}),
+          ...(sort === 'MAX_TO_MIN' ? { price: 'DESC' } : {}),
+          ...(sort === 'MIN_TO_MAX' ? { price: 'ASC' } : {}),
         }
       } : {})
     })
