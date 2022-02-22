@@ -17,6 +17,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     this.remove = this.remove.bind(this)
     this.update = this.update.bind(this)
     this.show = this.show.bind(this)
+    this.search = this.search.bind(this)
   }
 
   @BaseController.errorHandler()
@@ -62,6 +63,18 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
       externalId: externalId?.toString(),
       merchantId,
       finished
+    })
+
+    return BaseController.successResponse(res, { advertisings })
+  }
+
+  @BaseController.errorHandler()
+  async search(req: Request, res: Response): Promise<Response> {
+    const advertisingIds = (req?.query?.advertisingIds?.toString() ?? '').split(',').filter(Boolean)
+    const sort = req?.query?.sort?.toString()
+    const advertisings = await this.repository.search({
+      advertisingIds,
+      sort
     })
 
     return BaseController.successResponse(res, { advertisings })

@@ -53,6 +53,17 @@ const merchantDocs = {
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
   }),
+  ...createDoc('/advertisings', ['Advertising'], [
+    {
+      method: 'get',
+      title: 'Search advertisings',
+      description: 'Get advertisings endpoint',
+      queryParams: [
+        { type: 'string', name: 'advertisingIds' },
+        { type: 'string', name: 'sort' },
+      ]
+    }
+  ]),
   ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}', ['Advertising'], [
     {
       method: 'delete',

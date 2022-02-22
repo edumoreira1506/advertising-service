@@ -19,6 +19,8 @@ import withFavoriteParam from '@Middlewares/withFavoriteParam'
 
 const router = express.Router()
 
+router.get('/advertisings', AdvertisingController.search)
+
 router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantController.store)
 
 router.get('/merchants', MerchantController.index)
