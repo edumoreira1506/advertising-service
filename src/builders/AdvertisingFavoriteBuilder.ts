@@ -27,6 +27,7 @@ export default class AdvertisingFavoriteBuilder {
   async validate() {
     const favoriteWithSameExternalId = await this._repository.search({
       externalId: this._externalId,
+      advertisingId: this._advertising.id
     })
 
     if (favoriteWithSameExternalId.length) {

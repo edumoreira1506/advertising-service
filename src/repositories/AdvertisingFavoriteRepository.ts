@@ -6,10 +6,18 @@ import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
 @EntityRepository(AdvertisingFavorite)
 export default class AdvertisingFavoriteRepository extends BaseRepository<AdvertisingFavorite> {
   search({
-    externalId
-  }: { externalId: string; }) {
+    externalId,
+    advertisingId
+  }: {
+    externalId: string;
+    advertisingId?: string;
+  }) {
     return this.find({
-      where: { externalId, active: true },
+      where: {
+        externalId,
+        ...(advertisingId ? { advertisingId } : {}),
+        active: true
+      },
     })
   }
 
