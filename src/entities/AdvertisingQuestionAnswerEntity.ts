@@ -12,24 +12,24 @@ import AdvertisingQuestion from './AdvertisingQuestionEntity'
 @Entity('advertising_question_answers')
 export default class AdvertisingQuestionAnswer {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+    id: string
 
   @Column('varchar')
-  externalId: string;
+    externalId: string
 
   @Column('boolean')
-  active: boolean;
+    active: boolean
 
   @Column('varchar')
-  content: string;
+    content: string
 
   @Column({ type: 'uuid', name: 'question_id'})
-  questionId: string;
+    questionId: string
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+    createdAt: Date
 
   @ManyToOne(() => AdvertisingQuestion, advertisingQuestion => advertisingQuestion.answers)
   @JoinColumn({ name: 'question_id' })
-  question: AdvertisingQuestion;
+    question: AdvertisingQuestion
 }

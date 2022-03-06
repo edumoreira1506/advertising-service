@@ -2,9 +2,9 @@ import Advertising from '@Entities/AdvertisingEntity'
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
 
 export default class AdvertisingQuestionBuilder {
-  private _externalId = '';
-  private _content: string;
-  private _advertising: Advertising;
+  private _externalId = ''
+  private _content: string
+  private _advertising: Advertising
 
   setAdvertising(advertising: Advertising) {
     this._advertising = advertising

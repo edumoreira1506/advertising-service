@@ -4,17 +4,17 @@ import Advertising from './AdvertisingEntity'
 @Entity('merchants')
 export default class Merchant {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+    id: string
 
   @Column('varchar')
-  externalId: string;
+    externalId: string
 
   @Column('boolean')
-  active: boolean;
+    active: boolean
 
   @OneToMany(() => Advertising, advertising => advertising.merchant)
-  advertisings?: Advertising[];
+    advertisings?: Advertising[]
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+    createdAt: Date
 }

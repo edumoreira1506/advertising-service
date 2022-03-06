@@ -4,9 +4,9 @@ import AlreadyFavoritedError from '@Errors/AlreadyFavoritedError'
 import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
 
 export default class AdvertisingFavoriteBuilder {
-  private _externalId = '';
-  private _advertising: Advertising;
-  private _repository: AdvertisingFavoriteRepository;
+  private _externalId = ''
+  private _advertising: Advertising
+  private _repository: AdvertisingFavoriteRepository
 
   constructor(advertisingFavoriteRepository: AdvertisingFavoriteRepository) {
     this._repository = advertisingFavoriteRepository

@@ -5,8 +5,8 @@ import Merchant from '@Entities/MerchantEntity'
 import MerchantRepository from '@Repositories/MerchantRepository'
 
 export default class BreederBuilder {
-  private _externalId = '';
-  private _repository: MerchantRepository;
+  private _externalId = ''
+  private _repository: MerchantRepository
 
   constructor(merchantRepository: MerchantRepository) {
     this._repository = merchantRepository
