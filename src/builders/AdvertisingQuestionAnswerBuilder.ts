@@ -2,9 +2,9 @@ import AdvertisingQuestionEntity from '@Entities/AdvertisingQuestionEntity'
 import AdvertisingQuestionAnswer from '@Entities/AdvertisingQuestionAnswerEntity'
 
 export default class AdvertisingQuestionAnswerBuilder {
-  private _externalId = '';
-  private _content: string;
-  private _question: AdvertisingQuestionEntity;
+  private _externalId = ''
+  private _content: string
+  private _question: AdvertisingQuestionEntity
 
   setQuestion(question: AdvertisingQuestionEntity) {
     this._question = question

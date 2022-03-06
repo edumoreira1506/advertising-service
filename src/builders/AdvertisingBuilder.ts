@@ -6,10 +6,10 @@ import Merchant from '@Entities/MerchantEntity'
 import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 
 export default class AdvertisingBuilder {
-  private _externalId = '';
-  private _price: number;
-  private _merchant: Merchant;
-  private _repository: AdvertisingRepository;
+  private _externalId = ''
+  private _price: number
+  private _merchant: Merchant
+  private _repository: AdvertisingRepository
 
   constructor(advertisingRepository: AdvertisingRepository) {
     this._repository = advertisingRepository
