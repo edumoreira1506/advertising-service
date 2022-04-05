@@ -30,6 +30,9 @@ export default class Advertising {
   @Column({ type: 'uuid', name: 'merchant_id'})
     merchantId: string
 
+  @Column('json')
+    metadata: Record<string, any>
+
   @ManyToOne(() => Merchant, merchant => merchant.advertisings)
   @JoinColumn({ name: 'merchant_id' })
     merchant: Merchant
