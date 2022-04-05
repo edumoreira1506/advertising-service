@@ -120,6 +120,11 @@ const merchantDocs = {
       description: 'Register advertising favorite endpoint',
       objectSchema: storeAdvertisingFavoriteSchema
     },
+    {
+      method: 'get',
+      title: 'Get advertising favorites',
+      description: 'Get advertising favorites endpoint',
+    },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
   }),
