@@ -7,6 +7,7 @@ import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 
 export default class AdvertisingBuilder {
   private _externalId = ''
+  private _metadata: Record<string, any>
   private _price: number
   private _merchant: Merchant
   private _repository: AdvertisingRepository
@@ -24,6 +25,12 @@ export default class AdvertisingBuilder {
     if (advertisingWithSameExternalId.length) {
       throw new ValidationError(i18n.__('advertising.errors.duplicated-external-id'))
     }
+  }
+
+  setMetadata(metadata: Record<string, any>) {
+    this._metadata = metadata
+
+    return this
   }
 
   setExternalId(externalId: string) {
@@ -52,6 +59,7 @@ export default class AdvertisingBuilder {
     advertising.externalId = this._externalId
     advertising.merchant = this._merchant
     advertising.price = this._price
+    advertising.metadata = this._metadata
 
     return advertising
   }

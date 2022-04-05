@@ -11,7 +11,8 @@ export const storeAdvertisingSchema = Joi.object({
     'number.empty': i18n.__('empty-field', { field: i18n.__('advertising.fields.price') }),
     'any.required': i18n.__('required-field', { field: i18n.__('advertising.fields.price') }),
     'number.min': i18n.__('advertising.errors.invalid-price')
-  })
+  }),
+  metadata: Joi.object()
 }).options({ abortEarly: false })
 
 export const updateAdvertisingSchema = Joi.object({
