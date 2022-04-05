@@ -29,6 +29,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const advertisingDTO = await new AdvertisingBuilder(this.repository)
       .setExternalId(req.body.externalId)
       .serPrice(req.body.price)
+      .setMetadata(req.body.metadata)
       .setMerchant(merchant)
       .build()
 
