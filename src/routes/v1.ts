@@ -73,6 +73,13 @@ router.post(
 )
 
 router.get(
+  '/merchants/:merchantId/advertisings/:advertisingId/favorites',
+  withMerchantParam,
+  withUnfinishedAdvertisingParam,
+  AdvertisingFavoriteController.index
+)
+
+router.get(
   '/favorites',
   AdvertisingFavoriteController.index
 )
