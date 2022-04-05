@@ -9,12 +9,12 @@ export default class AdvertisingFavoriteRepository extends BaseRepository<Advert
     externalId,
     advertisingId
   }: {
-    externalId: string;
+    externalId?: string;
     advertisingId?: string;
   }) {
     return this.find({
       where: {
-        externalId,
+        ...(externalId ? { externalId } : {}),
         ...(advertisingId ? { advertisingId } : {}),
         active: true
       },
