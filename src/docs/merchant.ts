@@ -61,6 +61,16 @@ const merchantDocs = {
       queryParams: [
         { type: 'string', name: 'advertisingIds' },
         { type: 'string', name: 'sort' },
+        { type: 'string', name: 'gender' },
+        { type: 'string', name: 'type' },
+        { type: 'string', name: 'tail' },
+        { type: 'string', name: 'dewlap' },
+        { type: 'string', name: 'crest' },
+        { type: 'string', name: 'description' },
+        { type: 'string', name: 'name' },
+        { type: 'string', name: 'genderCategory' },
+        { type: 'string', name: 'prices' },
+        { type: 'string', name: 'favoriteExternalId' },
       ]
     }
   ]),

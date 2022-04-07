@@ -63,7 +63,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const advertisings = await this.repository.search({
       externalId: externalId?.toString(),
       merchantId,
-      finished
+      finished,
     })
 
     return BaseController.successResponse(res, { advertisings })
@@ -72,10 +72,30 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
   @BaseController.errorHandler()
   async search(req: Request, res: Response): Promise<Response> {
     const advertisingIds = (req?.query?.advertisingIds?.toString() ?? '').split(',').filter(Boolean)
+    const favoriteExternalId = req?.query?.favoriteExternalId?.toString()
     const sort = req?.query?.sort?.toString()
+    const gender = req.query?.gender?.toString()?.split(',').filter(Boolean) ?? []
+    const type = req.query?.type?.toString().split(',').filter(Boolean) ?? []
+    const tail = req.query?.tail?.toString().split(',').filter(Boolean) ?? []
+    const dewlap = req.query?.dewlap?.toString().split(',').filter(Boolean) ?? []
+    const crest = req.query?.crest?.toString().split(',').filter(Boolean) ?? []
+    const description = req.query?.description?.toString()
+    const name = req.query?.name?.toString()
+    const genderCategory = req?.query?.genderCategory?.toString()?.split(',').filter(Boolean) ?? []
+    const prices = req?.query?.prices && JSON.parse(req.query.prices.toString())
     const advertisings = await this.repository.search({
       advertisingIds,
-      sort
+      sort,
+      gender,
+      type,
+      tail,
+      dewlap,
+      crest,
+      description,
+      name,
+      genderCategory,
+      prices,
+      favoriteExternalId
     })
 
     return BaseController.successResponse(res, { advertisings })
