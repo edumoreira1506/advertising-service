@@ -32,7 +32,7 @@ const RepositoryHelpers = {
     const sortOptions: Record<string, object> = {
       MAX_TO_MIN: { price: 'DESC' },
       MIN_TO_MAX: { price: 'ASC' },
-      FEATURED: { favorites: 'DESC' }
+      FEATURED: { favorites: 'ASC' }
     }
 
     return sortOptions?.[sort]

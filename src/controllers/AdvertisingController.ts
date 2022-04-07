@@ -7,6 +7,7 @@ import Advertising from '@Entities/AdvertisingEntity'
 import { RequestWithMerchant, RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingBuilder from '@Builders/AdvertisingBuilder'
 import { dataSource } from '@Configs/database'
+import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 
 class AdvertisingController extends BaseController<Advertising>  {
   constructor(repository: ObjectType<Advertising>, dataSource: DataSource) {
@@ -99,8 +100,9 @@ class AdvertisingController extends BaseController<Advertising>  {
       favoriteExternalId,
       page
     }
-    const advertisings = await this.repository.search(queryParamsObject)
-    const pages = await this.repository.countPages(queryParamsObject)
+
+    const advertisings = await AdvertisingRepository.search(queryParamsObject)
+    const pages = await AdvertisingRepository.countPages(queryParamsObject)
 
     return BaseController.successResponse(res, { advertisings, pages })
   }
