@@ -18,6 +18,7 @@ type SearchParams = {
   description?: string;
   name?: string;
   prices?: { min?: number; max?: number };
+  favoriteExternalId?: string;
 }
 
 @EntityRepository(Advertising)
@@ -68,6 +69,7 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
     name,
     description,
     prices,
+    favoriteExternalId
   }: SearchParams) {
     return {
       where: {
@@ -83,6 +85,11 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
         ...(AdvertisingRepository.createWhereInMetadataField('tail', tail)),
         ...(AdvertisingRepository.createWhereLikeMetadataField('name', name)),
         ...(AdvertisingRepository.createWhereLikeMetadataField('description', description)),
+        ...(favoriteExternalId ? {
+          id: Raw(() =>'"Advertising"."id" IN (SELECT "AdvertisingFavorite"."advertising_id" FROM "advertising_favorites" "AdvertisingFavorite" WHERE "AdvertisingFavorite"."externalId" = :favoriteExternalId)', {
+            favoriteExternalId
+          })
+        } : {}),
         ...(typeof prices?.min === 'number' && typeof prices?.max === 'number' ? {
           price: Between(prices.min, prices.max)
         } : {}),

@@ -72,6 +72,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
   @BaseController.errorHandler()
   async search(req: Request, res: Response): Promise<Response> {
     const advertisingIds = (req?.query?.advertisingIds?.toString() ?? '').split(',').filter(Boolean)
+    const favoriteExternalId = req?.query?.favoriteExternalId?.toString()
     const sort = req?.query?.sort?.toString()
     const gender = req.query?.gender?.toString()?.split(',').filter(Boolean) ?? []
     const type = req.query?.type?.toString().split(',').filter(Boolean) ?? []
@@ -93,7 +94,8 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
       description,
       name,
       genderCategory,
-      prices
+      prices,
+      favoriteExternalId
     })
 
     return BaseController.successResponse(res, { advertisings })
