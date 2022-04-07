@@ -1,4 +1,4 @@
-import { Between, EntityRepository, In, Like } from 'typeorm'
+import { Between, EntityRepository, In, Raw } from 'typeorm'
 import { BaseRepository } from '@cig-platform/core'
 
 import Advertising from '@Entities/AdvertisingEntity'
@@ -33,6 +33,26 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
     return sortOptions?.[sort]
   }
 
+  static createWhereInMetadataField(fieldName: string, fieldValue: string[] = []) {
+    return fieldValue?.length
+      ? {
+        metadata: Raw(() =>`"Advertising"."metadata"::json->>'${fieldName}' IN (:${fieldName})`, {
+          [fieldName]: fieldValue.join(',')
+        }),
+      }
+      : {}
+  }
+
+  static createWhereLikeMetadataField(fieldName: string, fieldValue = '') {
+    return fieldValue?.length
+      ? {
+        metadata: Raw(() =>`"Advertising"."metadata"::json->>'${fieldName}' LIKE :${fieldName}`, {
+          [fieldName]: `%${fieldValue}%`
+        }),
+      }
+      : {}
+  }
+
   static createFilters({
     advertisingIds,
     externalId,
@@ -49,27 +69,20 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
     description,
     prices,
   }: SearchParams) {
-    const commonMetadataQueryParams = {
-      ...(gender?.length ? { gender: In(gender) } : {}),
-      ...(genderCategory?.length ? { genderCategory: In(genderCategory) } : {}),
-      ...(type?.length ? { type: In(type) } : {}),
-      ...(crest?.length ? { crest: In(crest) } : {}),
-      ...(dewlap?.length ? { dewlap: In(dewlap) } : {}),
-      ...(tail?.length ? { tail: In(tail) } : {}),
-    }
-    const metadataParams = [
-      (name ? { name: Like(`%${name}%`), ...commonMetadataQueryParams } : undefined),
-      (description ? { description: Like(`%${description}%`), ...commonMetadataQueryParams } : undefined),
-      (!name && !description ? commonMetadataQueryParams : undefined)
-    ].filter(Boolean)
-
     return {
       where: {
         ...(externalId ? { externalId } : {}),
         ...(merchantId ? { merchantId } : {}),
         ...(typeof finished === 'boolean' ? { finished } : {}),
         ...(advertisingIds?.length ? { id: In(advertisingIds) } : {}),
-        ...(Object.values(metadataParams).length ? { metadata: metadataParams } : {}),
+        ...(AdvertisingRepository.createWhereInMetadataField('gender', gender)),
+        ...(AdvertisingRepository.createWhereInMetadataField('genderCategory', genderCategory)),
+        ...(AdvertisingRepository.createWhereInMetadataField('type', type)),
+        ...(AdvertisingRepository.createWhereInMetadataField('crest', crest)),
+        ...(AdvertisingRepository.createWhereInMetadataField('dewlap', dewlap)),
+        ...(AdvertisingRepository.createWhereInMetadataField('tail', tail)),
+        ...(AdvertisingRepository.createWhereLikeMetadataField('name', name)),
+        ...(AdvertisingRepository.createWhereLikeMetadataField('description', description)),
         ...(typeof prices?.min === 'number' && typeof prices?.max === 'number' ? {
           price: Between(prices.min, prices.max)
         } : {}),
@@ -79,20 +92,9 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
     }
   }
 
-  search({
-    externalId,
-    merchantId,
-    finished,
-    advertisingIds = [],
-    sort
-  }: SearchParams = {}) {
-    const { where, order } = AdvertisingRepository.createFilters({
-      advertisingIds,
-      externalId,
-      finished,
-      merchantId,
-      sort
-    })
+  search(params: SearchParams = {}) {
+    const { where, order } = AdvertisingRepository.createFilters(params)
+
     return this.find({
       where,
       order
