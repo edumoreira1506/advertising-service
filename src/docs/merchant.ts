@@ -71,6 +71,7 @@ const merchantDocs = {
         { type: 'string', name: 'genderCategory' },
         { type: 'string', name: 'prices' },
         { type: 'string', name: 'favoriteExternalId' },
+        { type: 'string', name: 'page' },
       ]
     }
   ]),
