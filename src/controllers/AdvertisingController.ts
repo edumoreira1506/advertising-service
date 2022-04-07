@@ -83,7 +83,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const name = req.query?.name?.toString()
     const genderCategory = req?.query?.genderCategory?.toString()?.split(',').filter(Boolean) ?? []
     const prices = req?.query?.prices && JSON.parse(req.query.prices.toString())
-    const advertisings = await this.repository.search({
+    const queryParamsObject = {
       advertisingIds,
       sort,
       gender,
@@ -96,9 +96,11 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
       genderCategory,
       prices,
       favoriteExternalId
-    })
+    }
+    const advertisings = await this.repository.search(queryParamsObject)
+    const pages = await this.repository.countPages(queryParamsObject)
 
-    return BaseController.successResponse(res, { advertisings })
+    return BaseController.successResponse(res, { advertisings, pages })
   }
 
   @BaseController.errorHandler()
