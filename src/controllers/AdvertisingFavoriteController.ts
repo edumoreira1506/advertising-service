@@ -1,16 +1,16 @@
-import { ObjectType } from 'typeorm'
+import { DataSource, ObjectType } from 'typeorm'
 import { Request, Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
 import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
 import { RequestWithMerchantAndAdvertising, RequestWithMerchantAndAdvertisingAndFavorite } from '@Types/requests'
 import AdvertisingFavoriteBuilder from '@Builders/AdvertisingFavoriteBuilder'
+import { dataSource } from '@Configs/database'
 
-class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, AdvertisingFavoriteRepository>  {
-  constructor(repository: ObjectType<AdvertisingFavorite>) {
-    super(repository)
+class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite>  {
+  constructor(repository: ObjectType<AdvertisingFavorite>, dataSource: DataSource) {
+    super(repository, dataSource)
 
     this.store = this.store.bind(this)
     this.remove = this.remove.bind(this)
@@ -56,4 +56,4 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
   }
 }
 
-export default new AdvertisingFavoriteController(AdvertisingFavoriteRepository)
+export default new AdvertisingFavoriteController(AdvertisingFavorite, dataSource)

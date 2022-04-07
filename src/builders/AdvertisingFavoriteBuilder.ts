@@ -6,9 +6,9 @@ import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepo
 export default class AdvertisingFavoriteBuilder {
   private _externalId = ''
   private _advertising: Advertising
-  private _repository: AdvertisingFavoriteRepository
+  private _repository: typeof AdvertisingFavoriteRepository
 
-  constructor(advertisingFavoriteRepository: AdvertisingFavoriteRepository) {
+  constructor(advertisingFavoriteRepository: typeof AdvertisingFavoriteRepository) {
     this._repository = advertisingFavoriteRepository
   }
 

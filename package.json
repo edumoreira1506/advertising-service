@@ -20,7 +20,7 @@
 	"bugs": {},
 	"homepage": "",
 	"dependencies": {
-		"@cig-platform/core": "^0.7.9",
+		"@cig-platform/core": "^0.10.0",
 		"@cig-platform/docs": "^0.4.6",
 		"@cig-platform/factories": "^0.0.20",
 		"cors": "^2.8.5",
@@ -32,7 +32,7 @@
 		"swagger-ui-express": "^4.3.0",
 		"ts-node": "^10.7.0",
 		"tsconfig-paths": "^3.13.0",
-		"typeorm": "^0.2.45",
+		"typeorm": "^0.3.0",
 		"typescript": "^4.6.2"
 	},
 	"devDependencies": {

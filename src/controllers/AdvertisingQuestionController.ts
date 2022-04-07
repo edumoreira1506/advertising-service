@@ -1,16 +1,16 @@
-import { ObjectType } from 'typeorm'
+import { DataSource, ObjectType } from 'typeorm'
 import { Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
 import { RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingQuestionBuilder from '@Builders/AdvertisingQuestionBuilder'
+import { dataSource } from '@Configs/database'
 
-class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, AdvertisingQuestionRepository>  {
-  constructor(repository: ObjectType<AdvertisingQuestion>) {
-    super(repository)
+class AdvertisingQuestionController extends BaseController<AdvertisingQuestion>  {
+  constructor(repository: ObjectType<AdvertisingQuestion>, dataSource: DataSource) {
+    super(repository, dataSource)
 
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
@@ -47,4 +47,4 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
   }
 }
 
-export default new AdvertisingQuestionController(AdvertisingQuestionRepository)
+export default new AdvertisingQuestionController(AdvertisingQuestion, dataSource)

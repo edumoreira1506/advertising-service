@@ -26,7 +26,7 @@ export default class AdvertisingFavorite {
   @CreateDateColumn({ name: 'created_at' })
     createdAt: Date
 
-  @ManyToOne(() => Advertising, advertising => advertising.questions)
+  @ManyToOne(() => Advertising, advertising => advertising.favorites)
   @JoinColumn({ name: 'advertising_id' })
     advertising: Advertising
 }

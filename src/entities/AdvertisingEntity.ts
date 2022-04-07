@@ -4,11 +4,12 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  OneToMany
+  OneToMany,
 } from 'typeorm'
 
 import Merchant from './MerchantEntity'
 import AdvertisingQuestion from './AdvertisingQuestionEntity'
+import AdvertisingFavorite from './AdvertisingFavoriteEntity'
 
 @Entity('advertisings')
 export default class Advertising {
@@ -39,4 +40,7 @@ export default class Advertising {
 
   @OneToMany(() => AdvertisingQuestion, advertisingQuestion => advertisingQuestion.advertising)
     questions?: AdvertisingQuestion[]
+
+  @OneToMany(() => AdvertisingFavorite, advertisingFavorite => advertisingFavorite.advertising)
+    favorites?: AdvertisingFavorite[]
 }

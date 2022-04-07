@@ -1,16 +1,16 @@
 import { Request, Response } from 'express'
-import { ObjectType } from 'typeorm'
+import { DataSource, ObjectType } from 'typeorm'
 import { ApiError, BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import MerchantRepository from '@Repositories/MerchantRepository'
 import Merchant from '@Entities/MerchantEntity'
 import MerchantBuilder from '@Builders/MerchantBuilder'
 import { RequestWithMerchant } from '@Types/requests'
+import { dataSource } from '@Configs/database'
 
-class MerchantController extends BaseController<Merchant, MerchantRepository>  {
-  constructor(repository: ObjectType<Merchant>) {
-    super(repository)
+class MerchantController extends BaseController<Merchant>  {
+  constructor(repository: ObjectType<Merchant>, dataSource: DataSource) {
+    super(repository, dataSource)
 
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
@@ -63,4 +63,4 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
   }
 }
 
-export default new MerchantController(MerchantRepository)
+export default new MerchantController(Merchant, dataSource)
