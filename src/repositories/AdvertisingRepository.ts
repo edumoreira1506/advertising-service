@@ -19,7 +19,10 @@ type SearchParams = {
   name?: string;
   prices?: { min?: number; max?: number };
   favoriteExternalId?: string;
+  page?: number
 }
+
+const ITEMS_PER_PAGE = 30
 
 @EntityRepository(Advertising)
 export default class AdvertisingRepository extends BaseRepository<Advertising> {
@@ -99,13 +102,25 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
     }
   }
 
-  search(params: SearchParams = {}) {
+  search({ page = 0, ...params }: SearchParams = {}) {
     const { where, order } = AdvertisingRepository.createFilters(params)
 
     return this.find({
       where,
-      order
+      order,
+      skip: page * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE
     })
+  }
+
+  async countPages(params: SearchParams) {
+    const { where } = AdvertisingRepository.createFilters(params)
+
+    const advertisingsAmount = await this.count({
+      where
+    })
+
+    return Math.ceil(advertisingsAmount / ITEMS_PER_PAGE)
   }
 
   deleteById(id: string) {
