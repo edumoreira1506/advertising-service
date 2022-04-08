@@ -32,7 +32,6 @@ const RepositoryHelpers = {
     const sortOptions: Record<string, object> = {
       MAX_TO_MIN: { price: 'DESC' },
       MIN_TO_MAX: { price: 'ASC' },
-      FEATURED: { favorites: 'ASC' }
     }
 
     return sortOptions?.[sort]
@@ -113,7 +112,6 @@ const AdvertisingRepository = dataSource.getRepository(Advertising).extend({
       order,
       skip: page * ITEMS_PER_PAGE,
       take: ITEMS_PER_PAGE,
-      relations: ['favorites']
     })
   },
   async countPages(params: SearchParams) {

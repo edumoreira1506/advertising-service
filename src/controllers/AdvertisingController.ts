@@ -27,14 +27,14 @@ class AdvertisingController extends BaseController<Advertising>  {
 
     if (!merchant) throw new NotFoundError()
 
-    const advertisingDTO = await new AdvertisingBuilder(this.repository)
+    const advertisingDTO = await new AdvertisingBuilder(AdvertisingRepository)
       .setExternalId(req.body.externalId)
       .serPrice(req.body.price)
       .setMetadata(req.body.metadata)
       .setMerchant(merchant)
       .build()
 
-    const advertising = await this.repository.save(advertisingDTO)
+    const advertising = await AdvertisingRepository.save(advertisingDTO)
 
     return BaseController.successResponse(res, { advertising, message: i18n.__('messages.success') })
   }
@@ -50,7 +50,7 @@ class AdvertisingController extends BaseController<Advertising>  {
     const newPrice = req.body.price
     const finished = typeof req?.body?.finished === 'boolean' ? req.body.finished : undefined
 
-    await this.repository.update({ id: advertising.id }, {
+    await AdvertisingRepository.update({ id: advertising.id }, {
       price: Number(newPrice),
       ...(finished ? { finished } : {})
     })
@@ -61,7 +61,7 @@ class AdvertisingController extends BaseController<Advertising>  {
     const externalId = req.query.externalId
     const finished = req.query?.finished ? Boolean(req.query.finished === 'true') : undefined
     const merchantId = req.params.merchantId
-    const advertisings = await this.repository.search({
+    const advertisings = await AdvertisingRepository.search({
       externalId: externalId?.toString(),
       merchantId,
       finished,
@@ -114,7 +114,7 @@ class AdvertisingController extends BaseController<Advertising>  {
 
     if (!advertising) throw new NotFoundError()
 
-    await this.repository.deleteById(advertising.id)
+    await AdvertisingRepository.deleteById(advertising.id)
   }
 
   @BaseController.errorHandler()
