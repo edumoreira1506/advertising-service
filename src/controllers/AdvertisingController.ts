@@ -45,11 +45,13 @@ class AdvertisingController {
     const price = Number(req?.body?.price ?? advertising?.price)
     const favoritesAmount = Number(req?.body?.favoritesAmount ?? advertising?.favoritesAmount ?? 0)
     const finished = typeof req?.body?.finished === 'boolean' ? req.body.finished : undefined
+    const metadata = req?.body?.metadata ?? advertising?.metadata ?? {}
 
     await AdvertisingRepository.update({ id: advertising.id }, {
       price,
       ...(finished ? { finished } : {}),
-      favoritesAmount
+      favoritesAmount,
+      metadata
     })
   }
 
