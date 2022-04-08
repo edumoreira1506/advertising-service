@@ -1,17 +1,13 @@
-import { ObjectType } from 'typeorm'
 import { Request, Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
-import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
 import { RequestWithMerchantAndAdvertising, RequestWithMerchantAndAdvertisingAndFavorite } from '@Types/requests'
 import AdvertisingFavoriteBuilder from '@Builders/AdvertisingFavoriteBuilder'
+import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
 
-class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, AdvertisingFavoriteRepository>  {
-  constructor(repository: ObjectType<AdvertisingFavorite>) {
-    super(repository)
-
+class AdvertisingFavoriteController  {
+  constructor() {
     this.store = this.store.bind(this)
     this.remove = this.remove.bind(this)
     this.index = this.index.bind(this)
@@ -24,12 +20,12 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
 
     if (!advertising || !merchant) throw new NotFoundError()
 
-    const advertisingFavoriteDTO = await new AdvertisingFavoriteBuilder(this.repository)
+    const advertisingFavoriteDTO = await new AdvertisingFavoriteBuilder(AdvertisingFavoriteRepository)
       .setExternalId(req.body.externalId)
       .setAdvertising(advertising)
       .build()
 
-    const advertisingFavorite = await this.repository.save(advertisingFavoriteDTO)
+    const advertisingFavorite = await AdvertisingFavoriteRepository.save(advertisingFavoriteDTO)
 
     return BaseController.successResponse(res, { advertisingFavorite, message: i18n.__('messages.success') })
   }
@@ -43,17 +39,17 @@ class AdvertisingFavoriteController extends BaseController<AdvertisingFavorite, 
 
     if (!advertising || !merchant || !favorite) throw new NotFoundError()
 
-    await this.repository.deleteById(favorite.id)
+    await AdvertisingFavoriteRepository.deleteById(favorite.id)
   }
 
   @BaseController.errorHandler()
   async index(req: Request, res: Response) {
     const externalId = String(req?.query?.externalId ?? '')
     const advertisingId =  req?.params?.advertisingId
-    const favorites = await this.repository.search({ externalId, advertisingId })
+    const favorites = await AdvertisingFavoriteRepository.search({ externalId, advertisingId })
 
     return BaseController.successResponse(res, { favorites })
   }
 }
 
-export default new AdvertisingFavoriteController(AdvertisingFavoriteRepository)
+export default new AdvertisingFavoriteController()

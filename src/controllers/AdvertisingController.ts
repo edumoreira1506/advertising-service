@@ -1,17 +1,13 @@
 import { Request, Response } from 'express'
-import { ObjectType } from 'typeorm'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingRepository from '@Repositories/AdvertisingRepository'
-import Advertising from '@Entities/AdvertisingEntity'
 import { RequestWithMerchant, RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingBuilder from '@Builders/AdvertisingBuilder'
+import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 
-class AdvertisingController extends BaseController<Advertising, AdvertisingRepository>  {
-  constructor(repository: ObjectType<Advertising>) {
-    super(repository)
-
+class AdvertisingController {
+  constructor() {
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
     this.remove = this.remove.bind(this)
@@ -26,14 +22,14 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
 
     if (!merchant) throw new NotFoundError()
 
-    const advertisingDTO = await new AdvertisingBuilder(this.repository)
+    const advertisingDTO = await new AdvertisingBuilder(AdvertisingRepository)
       .setExternalId(req.body.externalId)
       .serPrice(req.body.price)
       .setMetadata(req.body.metadata)
       .setMerchant(merchant)
       .build()
 
-    const advertising = await this.repository.save(advertisingDTO)
+    const advertising = await AdvertisingRepository.save(advertisingDTO)
 
     return BaseController.successResponse(res, { advertising, message: i18n.__('messages.success') })
   }
@@ -49,7 +45,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const newPrice = req.body.price
     const finished = typeof req?.body?.finished === 'boolean' ? req.body.finished : undefined
 
-    await this.repository.update({ id: advertising.id }, {
+    await AdvertisingRepository.update({ id: advertising.id }, {
       price: Number(newPrice),
       ...(finished ? { finished } : {})
     })
@@ -60,7 +56,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
     const externalId = req.query.externalId
     const finished = req.query?.finished ? Boolean(req.query.finished === 'true') : undefined
     const merchantId = req.params.merchantId
-    const advertisings = await this.repository.search({
+    const advertisings = await AdvertisingRepository.search({
       externalId: externalId?.toString(),
       merchantId,
       finished,
@@ -99,8 +95,9 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
       favoriteExternalId,
       page
     }
-    const advertisings = await this.repository.search(queryParamsObject)
-    const pages = await this.repository.countPages(queryParamsObject)
+
+    const advertisings = await AdvertisingRepository.search(queryParamsObject)
+    const pages = await AdvertisingRepository.countPages(queryParamsObject)
 
     return BaseController.successResponse(res, { advertisings, pages })
   }
@@ -112,7 +109,7 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
 
     if (!advertising) throw new NotFoundError()
 
-    await this.repository.deleteById(advertising.id)
+    await AdvertisingRepository.deleteById(advertising.id)
   }
 
   @BaseController.errorHandler()
@@ -126,4 +123,4 @@ class AdvertisingController extends BaseController<Advertising, AdvertisingRepos
   }
 }
 
-export default new AdvertisingController(AdvertisingRepository)
+export default new AdvertisingController()

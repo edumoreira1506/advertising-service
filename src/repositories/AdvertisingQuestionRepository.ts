@@ -1,14 +1,15 @@
-import { EntityRepository } from 'typeorm'
-import { BaseRepository } from '@cig-platform/core'
+import { BaseRepositoryFunctionsGenerator } from '@cig-platform/core'
 
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
+import { dataSource } from '@Configs/database'
 
-@EntityRepository(AdvertisingQuestion)
-export default class AdvertisingQuestionRepository extends BaseRepository<AdvertisingQuestion> {
+const BaseRepository = BaseRepositoryFunctionsGenerator<AdvertisingQuestion>()
+
+const AdvertisingQuestionRepository = dataSource.getRepository(AdvertisingQuestion).extend({
+  ...BaseRepository,
   deleteById(id: string) {
     return this.updateById(id, { active: false })
-  }
-
+  },
   getByAdvertisingId(advertisingId: string) {
     return this.find({
       where: { advertisingId },
@@ -18,4 +19,6 @@ export default class AdvertisingQuestionRepository extends BaseRepository<Advert
       }
     })
   }
-}
+})
+
+export default AdvertisingQuestionRepository

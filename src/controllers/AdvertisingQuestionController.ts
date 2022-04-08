@@ -1,17 +1,13 @@
-import { ObjectType } from 'typeorm'
 import { Response } from 'express'
 import { BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
-import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
 import { RequestWithMerchantAndAdvertising } from '@Types/requests'
 import AdvertisingQuestionBuilder from '@Builders/AdvertisingQuestionBuilder'
+import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
 
-class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, AdvertisingQuestionRepository>  {
-  constructor(repository: ObjectType<AdvertisingQuestion>) {
-    super(repository)
-
+class AdvertisingQuestionController  {
+  constructor() {
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
   }
@@ -29,7 +25,7 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
       .setAdvertising(advertising)
       .build()
 
-    const advertisingQuestion = await this.repository.save(advertisingQuestionDTO)
+    const advertisingQuestion = await AdvertisingQuestionRepository.save(advertisingQuestionDTO)
 
     return BaseController.successResponse(res, { advertisingQuestion, message: i18n.__('messages.success') })
   }
@@ -41,10 +37,10 @@ class AdvertisingQuestionController extends BaseController<AdvertisingQuestion, 
 
     if (!advertising || !merchant) throw new NotFoundError()
 
-    const questions = await this.repository.getByAdvertisingId(advertising.id)
+    const questions = await AdvertisingQuestionRepository.getByAdvertisingId(advertising.id)
 
     return BaseController.successResponse(res, { questions })
   }
 }
 
-export default new AdvertisingQuestionController(AdvertisingQuestionRepository)
+export default new AdvertisingQuestionController()

@@ -1,10 +1,12 @@
-import { EntityRepository } from 'typeorm'
-import { BaseRepository } from '@cig-platform/core'
+import { BaseRepositoryFunctionsGenerator } from '@cig-platform/core'
 
+import { dataSource } from '@Configs/database'
 import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
 
-@EntityRepository(AdvertisingFavorite)
-export default class AdvertisingFavoriteRepository extends BaseRepository<AdvertisingFavorite> {
+const BaseRepository = BaseRepositoryFunctionsGenerator<AdvertisingFavorite>()
+
+const AdvertisingFavoriteRepository = dataSource.getRepository(AdvertisingFavorite).extend({
+  ...BaseRepository,
   search({
     externalId,
     advertisingId
@@ -19,9 +21,11 @@ export default class AdvertisingFavoriteRepository extends BaseRepository<Advert
         active: true
       },
     })
-  }
+  },
 
   deleteById(id: string) {
     return this.updateById(id, { active: false })
   }
-}
+})
+
+export default AdvertisingFavoriteRepository

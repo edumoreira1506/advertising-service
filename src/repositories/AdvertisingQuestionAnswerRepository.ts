@@ -1,11 +1,15 @@
-import { EntityRepository } from 'typeorm'
-import { BaseRepository } from '@cig-platform/core'
+import { BaseRepositoryFunctionsGenerator } from '@cig-platform/core'
 
 import AdvertisingQuestionAnswer from '@Entities/AdvertisingQuestionAnswerEntity'
+import { dataSource } from '@Configs/database'
 
-@EntityRepository(AdvertisingQuestionAnswer)
-export default class AdvertisingQuestionAnswerRepository extends BaseRepository<AdvertisingQuestionAnswer> {
+const BaseRepository = BaseRepositoryFunctionsGenerator<AdvertisingQuestionAnswer>()
+
+const AdvertisingQuestionAnswerRepository = dataSource.getRepository(AdvertisingQuestionAnswer).extend({
+  ...BaseRepository,
   deleteById(id: string) {
     return this.updateById(id, { active: false })
   }
-}
+})
+
+export default AdvertisingQuestionAnswerRepository

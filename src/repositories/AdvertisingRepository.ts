@@ -1,7 +1,8 @@
-import { Between, EntityRepository, In, Raw } from 'typeorm'
-import { BaseRepository } from '@cig-platform/core'
+import { Between, In, Raw } from 'typeorm'
+import { BaseRepositoryFunctionsGenerator } from '@cig-platform/core'
 
 import Advertising from '@Entities/AdvertisingEntity'
+import { dataSource } from '@Configs/database'
 
 type SearchParams = {
   externalId?: string;
@@ -24,20 +25,19 @@ type SearchParams = {
 
 const ITEMS_PER_PAGE = 30
 
-@EntityRepository(Advertising)
-export default class AdvertisingRepository extends BaseRepository<Advertising> {
-  static createSort(sort?: string) {
+const RepositoryHelpers = {
+  createSort(sort?: string) {
     if (!sort) return undefined
 
     const sortOptions: Record<string, object> = {
       MAX_TO_MIN: { price: 'DESC' },
-      MIN_TO_MAX: { price: 'ASC' }
+      MIN_TO_MAX: { price: 'ASC' },
+      FEATURED: { favoritesAmount: 'DESC' }
     }
 
     return sortOptions?.[sort]
-  }
-
-  static createWhereInMetadataField(fieldName: string, fieldValue: string[] = []) {
+  },
+  createWhereInMetadataField(fieldName: string, fieldValue: string[] = []) {
     return fieldValue?.length
       ? {
         metadata: Raw(() =>`"Advertising"."metadata"::json->>'${fieldName}' IN (:${fieldName})`, {
@@ -45,9 +45,8 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
         }),
       }
       : {}
-  }
-
-  static createWhereLikeMetadataField(fieldName: string, fieldValue = '') {
+  },
+  createWhereLikeMetadataField(fieldName: string, fieldValue = '') {
     return fieldValue?.length
       ? {
         metadata: Raw(() =>`"Advertising"."metadata"::json->>'${fieldName}' LIKE :${fieldName}`, {
@@ -55,9 +54,8 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
         }),
       }
       : {}
-  }
-
-  static createFilters({
+  },
+  createFilters({
     advertisingIds,
     externalId,
     finished,
@@ -80,14 +78,14 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
         ...(merchantId ? { merchantId } : {}),
         ...(typeof finished === 'boolean' ? { finished } : {}),
         ...(advertisingIds?.length ? { id: In(advertisingIds) } : {}),
-        ...(AdvertisingRepository.createWhereInMetadataField('gender', gender)),
-        ...(AdvertisingRepository.createWhereInMetadataField('genderCategory', genderCategory)),
-        ...(AdvertisingRepository.createWhereInMetadataField('type', type)),
-        ...(AdvertisingRepository.createWhereInMetadataField('crest', crest)),
-        ...(AdvertisingRepository.createWhereInMetadataField('dewlap', dewlap)),
-        ...(AdvertisingRepository.createWhereInMetadataField('tail', tail)),
-        ...(AdvertisingRepository.createWhereLikeMetadataField('name', name)),
-        ...(AdvertisingRepository.createWhereLikeMetadataField('description', description)),
+        ...(this.createWhereInMetadataField('gender', gender)),
+        ...(this.createWhereInMetadataField('genderCategory', genderCategory)),
+        ...(this.createWhereInMetadataField('type', type)),
+        ...(this.createWhereInMetadataField('crest', crest)),
+        ...(this.createWhereInMetadataField('dewlap', dewlap)),
+        ...(this.createWhereInMetadataField('tail', tail)),
+        ...(this.createWhereLikeMetadataField('name', name)),
+        ...(this.createWhereLikeMetadataField('description', description)),
         ...(favoriteExternalId ? {
           id: Raw(() =>'"Advertising"."id" IN (SELECT "AdvertisingFavorite"."advertising_id" FROM "advertising_favorites" "AdvertisingFavorite" WHERE "AdvertisingFavorite"."externalId" = :favoriteExternalId)', {
             favoriteExternalId
@@ -98,32 +96,37 @@ export default class AdvertisingRepository extends BaseRepository<Advertising> {
         } : {}),
         active: true,
       },
-      order: AdvertisingRepository.createSort(sort)
+      order: this.createSort(sort)
     }
   }
+}
 
+const BaseRepository = BaseRepositoryFunctionsGenerator<Advertising>()
+
+const AdvertisingRepository = dataSource.getRepository(Advertising).extend({
+  ...BaseRepository,
   search({ page = 0, ...params }: SearchParams = {}) {
-    const { where, order } = AdvertisingRepository.createFilters(params)
+    const { where, order } = RepositoryHelpers.createFilters(params)
 
     return this.find({
       where,
       order,
       skip: page * ITEMS_PER_PAGE,
-      take: ITEMS_PER_PAGE
+      take: ITEMS_PER_PAGE,
     })
-  }
-
+  },
   async countPages(params: SearchParams) {
-    const { where } = AdvertisingRepository.createFilters(params)
+    const { where } = RepositoryHelpers.createFilters(params)
 
     const advertisingsAmount = await this.count({
       where
     })
 
     return Math.ceil(advertisingsAmount / ITEMS_PER_PAGE)
-  }
-
+  },
   deleteById(id: string) {
     return this.updateById(id, { active: false })
   }
-}
+})
+
+export default AdvertisingRepository

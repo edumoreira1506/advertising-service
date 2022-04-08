@@ -1,14 +1,20 @@
-import { EntityRepository } from 'typeorm'
-import { BaseRepository } from '@cig-platform/core'
+import {  BaseRepositoryFunctionsGenerator } from '@cig-platform/core'
 
 import Merchant from '@Entities/MerchantEntity'
+import { dataSource } from '@Configs/database'
 
-@EntityRepository(Merchant)
-export default class MerchantRepository extends BaseRepository<Merchant> {
+const BaseRepository = BaseRepositoryFunctionsGenerator<Merchant>()
+
+const MerchantRepository = dataSource.getRepository(Merchant).extend({
+  ...BaseRepository,
   findByExternalId(externalId?: string) {
     return this.find({
-      ...(externalId ? { externalId } : {}),
-      active: true,
+      where: {
+        ...(externalId ? { externalId } : {}),
+        active: true,
+      }
     })
   }
-}
+})
+
+export default MerchantRepository

@@ -10,9 +10,9 @@ export default class AdvertisingBuilder {
   private _metadata: Record<string, any>
   private _price: number
   private _merchant: Merchant
-  private _repository: AdvertisingRepository
+  private _repository: typeof AdvertisingRepository
 
-  constructor(advertisingRepository: AdvertisingRepository) {
+  constructor(advertisingRepository: typeof AdvertisingRepository) {
     this._repository = advertisingRepository
   }
 

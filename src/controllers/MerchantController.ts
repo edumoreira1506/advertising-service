@@ -1,17 +1,13 @@
 import { Request, Response } from 'express'
-import { ObjectType } from 'typeorm'
 import { ApiError, BaseController, NotFoundError } from '@cig-platform/core'
 
 import i18n from '@Configs/i18n'
-import MerchantRepository from '@Repositories/MerchantRepository'
-import Merchant from '@Entities/MerchantEntity'
 import MerchantBuilder from '@Builders/MerchantBuilder'
 import { RequestWithMerchant } from '@Types/requests'
+import MerchantRepository from '@Repositories/MerchantRepository'
 
-class MerchantController extends BaseController<Merchant, MerchantRepository>  {
-  constructor(repository: ObjectType<Merchant>) {
-    super(repository)
-
+class MerchantController  {
+  constructor() {
     this.store = this.store.bind(this)
     this.index = this.index.bind(this)
     this.rollback = this.rollback.bind(this)
@@ -19,11 +15,10 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
 
   @BaseController.errorHandler()
   async store(req: Request, res: Response): Promise<Response> {
-    const merchantDTO = await new MerchantBuilder(this.repository)
+    const merchantDTO = await new MerchantBuilder(MerchantRepository)
       .setExternalId(req.body.externalId)
       .build()
-
-    const merchant = await this.repository.save(merchantDTO)
+    const merchant = await MerchantRepository.save(merchantDTO)
 
     return BaseController.successResponse(res, { merchant, message: i18n.__('messages.success') })
   }
@@ -31,7 +26,7 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
   @BaseController.errorHandler()
   async index(req: Request, res: Response): Promise<Response> {
     const externalId = req.query.externalId
-    const merchants = await this.repository.findByExternalId(externalId?.toString())
+    const merchants = await MerchantRepository.findByExternalId(externalId?.toString())
 
     return BaseController.successResponse(res, { merchants })
   }
@@ -50,7 +45,7 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
 
     if (diffInSeconds > 60) throw new ApiError(i18n.__('rollback.errors.expired'))
 
-    await this.repository.delete({ id: merchant.id })
+    await MerchantRepository.delete({ id: merchant.id })
   }
 
   @BaseController.errorHandler()
@@ -63,4 +58,4 @@ class MerchantController extends BaseController<Merchant, MerchantRepository>  {
   }
 }
 
-export default new MerchantController(MerchantRepository)
+export default new MerchantController()
