@@ -3,12 +3,12 @@ import { ApiError, AuthError, BaseController, NotFoundError, withRequestParam } 
 
 import { RequestWithMerchantAndAdvertisingAndFavorite } from '@Types/requests'
 import AdvertisingFavorite from '@Entities/AdvertisingFavoriteEntity'
-import AdvertisingFavoriteController from '@Controllers/AdvertisingFavoriteController'
+import AdvertisingFavoriteRepository from '@Repositories/AdvertisingFavoriteRepository'
 
 export const withFavoriteParamFactory =
   (errorCallback: (res: Response, error: ApiError) => Response) =>
     (req: RequestWithMerchantAndAdvertisingAndFavorite, res: Response, next: NextFunction) => {
-      return withRequestParam<AdvertisingFavorite>('favoriteId', 'favorite', AdvertisingFavoriteController, errorCallback)(req, res, () => {
+      return withRequestParam<AdvertisingFavorite>('favoriteId', 'favorite', AdvertisingFavoriteRepository, errorCallback)(req, res, () => {
         try {
           if (!req.advertising || !req.merchant || !req?.favorite?.active) throw new NotFoundError()
           if (req.favorite.advertisingId !== req.advertising.id) throw new AuthError()

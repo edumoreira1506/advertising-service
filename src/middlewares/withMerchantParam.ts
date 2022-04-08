@@ -1,6 +1,6 @@
 import {  withRequestParam } from '@cig-platform/core'
 
-import MerchantController from '@Controllers/MerchantController'
 import Merchant from '@Entities/MerchantEntity'
+import MerchantRepository from '@Repositories/MerchantRepository'
 
-export default withRequestParam<Merchant>('merchantId', 'merchant', MerchantController)
+export default withRequestParam<Merchant>('merchantId', 'merchant', MerchantRepository)

@@ -3,12 +3,12 @@ import { ApiError, AuthError, BaseController, NotFoundError, withRequestParam } 
 
 import { RequestWithMerchantAndAdvertisingAndQuestion } from '@Types/requests'
 import AdvertisingQuestion from '@Entities/AdvertisingQuestionEntity'
-import AdvertisingQuestionController from '@Controllers/AdvertisingQuestionController'
+import AdvertisingQuestionRepository from '@Repositories/AdvertisingQuestionRepository'
 
 export const withQuestionParamFactory =
   (errorCallback: (res: Response, error: ApiError) => Response) =>
     (req: RequestWithMerchantAndAdvertisingAndQuestion, res: Response, next: NextFunction) => {
-      return withRequestParam<AdvertisingQuestion>('questionId', 'question', AdvertisingQuestionController, errorCallback)(req, res, () => {
+      return withRequestParam<AdvertisingQuestion>('questionId', 'question', AdvertisingQuestionRepository, errorCallback)(req, res, () => {
         try {
           if (!req.advertising || !req.merchant || !req.question) throw new NotFoundError()
           if (req.question.advertisingId !== req.advertising.id) throw new AuthError()
