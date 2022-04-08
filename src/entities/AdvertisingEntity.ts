@@ -31,6 +31,9 @@ export default class Advertising {
   @Column({ type: 'uuid', name: 'merchant_id'})
     merchantId: string
 
+  @Column({ type: 'integer', name: 'favorites_amount' })
+    favoritesAmount: number
+
   @Column('json')
     metadata: Record<string, any>
 
