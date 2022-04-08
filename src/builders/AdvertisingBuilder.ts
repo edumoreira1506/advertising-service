@@ -9,6 +9,7 @@ export default class AdvertisingBuilder {
   private _externalId = ''
   private _metadata: Record<string, any>
   private _price: number
+  private _favoritesAmount: number
   private _merchant: Merchant
   private _repository: typeof AdvertisingRepository
 
@@ -25,6 +26,12 @@ export default class AdvertisingBuilder {
     if (advertisingWithSameExternalId.length) {
       throw new ValidationError(i18n.__('advertising.errors.duplicated-external-id'))
     }
+  }
+
+  setFavoritesAmount(favoritesAmount: number) {
+    this._favoritesAmount = favoritesAmount
+
+    return this
   }
 
   setMetadata(metadata: Record<string, any>) {
@@ -60,6 +67,7 @@ export default class AdvertisingBuilder {
     advertising.merchant = this._merchant
     advertising.price = this._price
     advertising.metadata = this._metadata
+    advertising.favoritesAmount = this._favoritesAmount
 
     return advertising
   }
