@@ -18,7 +18,6 @@ class MerchantController  {
     const merchantDTO = await new MerchantBuilder(MerchantRepository)
       .setExternalId(req.body.externalId)
       .build()
-
     const merchant = await MerchantRepository.save(merchantDTO)
 
     return BaseController.successResponse(res, { merchant, message: i18n.__('messages.success') })

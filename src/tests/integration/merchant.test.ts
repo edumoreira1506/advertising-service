@@ -1,10 +1,10 @@
 import request from 'supertest'
-import typeorm from 'typeorm'
 import { merchantFactory } from '@cig-platform/factories'
 
 import App from '@Configs/server'
 import i18n from '@Configs/i18n'
 import Merchant from '@Entities/MerchantEntity'
+import MerchantRepository from '@Repositories/MerchantRepository'
 
 jest.mock('typeorm', () => ({
   createConnection: jest.fn().mockResolvedValue({}),
@@ -20,6 +20,16 @@ jest.mock('typeorm', () => ({
   ManyToOne: jest.fn(),
   JoinColumn: jest.fn(),
   OneToMany: jest.fn(),
+  DataSource: jest.fn().mockReturnValue({
+    initialize: jest.fn().mockResolvedValue(undefined),
+    getRepository: jest.fn().mockReturnValue({
+      extend: jest.fn().mockReturnValue({
+        save: jest.fn(),
+        findByExternalId: jest.fn(),
+        findById: jest.fn()
+      })
+    })
+  })
 }))
 
 describe('Merchant actions', () => {
@@ -28,10 +38,8 @@ describe('Merchant actions', () => {
       const mockSave = jest.fn()
       const merchant = merchantFactory()
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findByExternalId: jest.fn().mockResolvedValue([])
-      })
+      jest.spyOn(MerchantRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(MerchantRepository, 'findByExternalId').mockImplementation(jest.fn().mockResolvedValue([]))
 
       const response = await request(App).post('/v1/merchants').send({
         externalId: merchant.externalId
@@ -50,9 +58,7 @@ describe('Merchant actions', () => {
     it('is an invalid merchant when has no external id', async () => {
       const mockSave = jest.fn()
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-      })
+      jest.spyOn(MerchantRepository, 'save').mockImplementation(mockSave)
 
       const response = await request(App).post('/v1/merchants')
 
@@ -72,10 +78,8 @@ describe('Merchant actions', () => {
       const merchant = merchantFactory()
       const mockFindByExternalId = jest.fn().mockResolvedValue([merchant])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findByExternalId: mockFindByExternalId
-      })
+      jest.spyOn(MerchantRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(MerchantRepository, 'findByExternalId').mockImplementation(mockFindByExternalId)
 
       const response = await request(App).post('/v1/merchants').send({
         externalId: merchant.externalId
@@ -100,9 +104,7 @@ describe('Merchant actions', () => {
       const mockFindByExternalId =jest.fn().mockResolvedValue(merchants) 
       const externalId = 'mock external id'
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        findByExternalId: mockFindByExternalId
-      })
+      jest.spyOn(MerchantRepository, 'findByExternalId').mockImplementation(mockFindByExternalId)
 
       const response = await request(App).get(`/v1/merchants?externalId=${externalId}`)
 
@@ -120,9 +122,7 @@ describe('Merchant actions', () => {
       const merchant = merchantFactory()
       const mockFindById =jest.fn().mockResolvedValue(merchant) 
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        findById: mockFindById
-      })
+      jest.spyOn(MerchantRepository, 'findById').mockImplementation(mockFindById)
 
       const response = await request(App).get(`/v1/merchants/${merchant.id}`)
 
@@ -138,9 +138,7 @@ describe('Merchant actions', () => {
       const merchantId = merchantFactory().id
       const mockFindById =jest.fn().mockResolvedValue(undefined) 
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        findById: mockFindById
-      })
+      jest.spyOn(MerchantRepository, 'findById').mockImplementation(mockFindById)
 
       const response = await request(App).get(`/v1/merchants/${merchantId}`)
 

@@ -1,10 +1,10 @@
 import request from 'supertest'
-import typeorm from 'typeorm'
 import { advertisingFactory, merchantFactory } from '@cig-platform/factories'
 
 import App from '@Configs/server'
 import i18n from '@Configs/i18n'
 import Advertising from '@Entities/AdvertisingEntity'
+import AdvertisingRepository from '@Repositories/AdvertisingRepository'
 
 jest.mock('typeorm', () => ({
   createConnection: jest.fn().mockResolvedValue({}),
@@ -20,6 +20,16 @@ jest.mock('typeorm', () => ({
   ManyToOne: jest.fn(),
   JoinColumn: jest.fn(),
   OneToMany: jest.fn(),
+  DataSource: jest.fn().mockReturnValue({
+    initialize: jest.fn().mockResolvedValue(undefined),
+    getRepository: jest.fn().mockReturnValue({
+      extend: jest.fn().mockReturnValue({
+        save: jest.fn(),
+        search: jest.fn(),
+        findById: jest.fn()
+      })
+    })
+  })
 }))
 
 describe('Advertising actions', () => {
@@ -31,11 +41,9 @@ describe('Advertising actions', () => {
       const mockFindById = jest.fn().mockResolvedValue(merchant)
       const mockSearch = jest.fn().mockResolvedValue([])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findById: mockFindById,
-        search: mockSearch,
-      })
+      jest.spyOn(AdvertisingRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(mockFindById)
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
         externalId: advertising.externalId,
@@ -61,11 +69,9 @@ describe('Advertising actions', () => {
       const mockFindById = jest.fn().mockResolvedValue(undefined)
       const mockSearch = jest.fn().mockResolvedValue([])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findById: mockFindById,
-        search: mockSearch,
-      })
+      jest.spyOn(AdvertisingRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(mockFindById)
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
         externalId: advertising.externalId,
@@ -91,11 +97,9 @@ describe('Advertising actions', () => {
       const mockFindById = jest.fn().mockResolvedValue(merchant)
       const mockSearch = jest.fn().mockResolvedValue([advertising])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findById: mockFindById,
-        search: mockSearch,
-      })
+      jest.spyOn(AdvertisingRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(mockFindById)
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
         externalId: advertising.externalId,
@@ -121,11 +125,9 @@ describe('Advertising actions', () => {
       const mockFindById = jest.fn().mockResolvedValue(merchant)
       const mockSearch = jest.fn().mockResolvedValue([])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findById: mockFindById,
-        search: mockSearch,
-      })
+      jest.spyOn(AdvertisingRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(mockFindById)
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
         price: advertising.price,
@@ -150,11 +152,9 @@ describe('Advertising actions', () => {
       const mockFindById = jest.fn().mockResolvedValue(merchant)
       const mockSearch = jest.fn().mockResolvedValue([])
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        save: mockSave,
-        findById: mockFindById,
-        search: mockSearch,
-      })
+      jest.spyOn(AdvertisingRepository, 'save').mockImplementation(mockSave)
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(mockFindById)
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).post(`/v1/merchants/${merchant.id}/advertisings`).send({
         externalId: advertising.externalId,
@@ -180,10 +180,8 @@ describe('Advertising actions', () => {
       const mockSearch =jest.fn().mockResolvedValue(advertisings) 
       const externalId = 'mock external id'
 
-      jest.spyOn(typeorm, 'getCustomRepository').mockReturnValue({
-        search: mockSearch,
-        findById: jest.fn().mockResolvedValue(merchant)
-      })
+      jest.spyOn(AdvertisingRepository, 'findById').mockImplementation(jest.fn().mockResolvedValue(merchant))
+      jest.spyOn(AdvertisingRepository, 'search').mockImplementation(mockSearch)
 
       const response = await request(App).get(`/v1/merchants/${merchant.id}/advertisings?externalId=${externalId}`)
 
