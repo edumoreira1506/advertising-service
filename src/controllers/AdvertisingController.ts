@@ -42,12 +42,12 @@ class AdvertisingController {
 
     if (!advertising || !merchant) throw new NotFoundError()
 
-    const newPrice = req.body.price
+    const price = Number(req?.body?.price ?? advertising?.price)
     const favoritesAmount = Number(req?.body?.favoritesAmount ?? advertising?.favoritesAmount ?? 0)
     const finished = typeof req?.body?.finished === 'boolean' ? req.body.finished : undefined
 
     await AdvertisingRepository.update({ id: advertising.id }, {
-      price: Number(newPrice),
+      price,
       ...(finished ? { finished } : {}),
       favoritesAmount
     })
