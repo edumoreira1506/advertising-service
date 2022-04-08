@@ -27,6 +27,7 @@ class AdvertisingController {
       .serPrice(req.body.price)
       .setMetadata(req.body.metadata)
       .setMerchant(merchant)
+      .setFavoritesAmount(0)
       .build()
 
     const advertising = await AdvertisingRepository.save(advertisingDTO)
