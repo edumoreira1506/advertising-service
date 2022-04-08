@@ -22,4 +22,5 @@ export const updateAdvertisingSchema = Joi.object({
     'number.min': i18n.__('advertising.errors.invalid-price')
   }),
   finished: Joi.bool(),
+  favoritesAmount: Joi.number(),
 }).options({ abortEarly: false })
