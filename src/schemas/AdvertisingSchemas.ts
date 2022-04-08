@@ -23,4 +23,5 @@ export const updateAdvertisingSchema = Joi.object({
   }),
   finished: Joi.bool(),
   favoritesAmount: Joi.number(),
+  metadata: Joi.object()
 }).options({ abortEarly: false })
