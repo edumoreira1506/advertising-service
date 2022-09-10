@@ -16,34 +16,43 @@ import withMerchantParam from '@Middlewares/withMerchantParam'
 import withAdvertisingParam, { withUnfinishedAdvertisingParam } from '@Middlewares/withAdvertisingParam'
 import withQuestionParam from '@Middlewares/withQuestionParam'
 import withFavoriteParam from '@Middlewares/withFavoriteParam'
+import withApiKey from '@Middlewares/withApiKey'
 
 const router = express.Router()
 
-router.get('/advertisings', AdvertisingController.search)
+router.get('/advertisings', withApiKey, AdvertisingController.search)
 
-router.post('/merchants', withBodyValidation(storeMerchantSchema), MerchantController.store)
+router.post('/merchants', withApiKey, withBodyValidation(storeMerchantSchema), MerchantController.store)
 
-router.get('/merchants', MerchantController.index)
+router.get('/merchants', withApiKey, MerchantController.index)
 
-router.get('/merchants/:merchantId', withMerchantParam, MerchantController.show)
+router.get('/merchants/:merchantId', withApiKey, withMerchantParam, MerchantController.show)
 
 router.post(
   '/merchants/:merchantId/rollback',
+  withApiKey,
   withMerchantParam,
   MerchantController.rollback
 )
 
 router.post(
   '/merchants/:merchantId/advertisings',
+  withApiKey,
   withMerchantParam,
   withBodyValidation(storeAdvertisingSchema),
   AdvertisingController.store
 )
 
-router.get('/merchants/:merchantId/advertisings', withMerchantParam, AdvertisingController.index)
+router.get(
+  '/merchants/:merchantId/advertisings',
+  withApiKey,
+  withMerchantParam,
+  AdvertisingController.index
+)
 
 router.get(
   '/merchants/:merchantId/advertisings/:advertisingId',
+  withApiKey,
   withMerchantParam,
   withAdvertisingParam,
   AdvertisingController.show
@@ -51,6 +60,7 @@ router.get(
 
 router.patch(
   '/merchants/:merchantId/advertisings/:advertisingId',
+  withApiKey,
   withBodyValidation(updateAdvertisingSchema),
   withMerchantParam,
   withAdvertisingParam,
@@ -59,6 +69,7 @@ router.patch(
 
 router.delete(
   '/merchants/:merchantId/advertisings/:advertisingId',
+  withApiKey,
   withMerchantParam,
   withAdvertisingParam,
   AdvertisingController.remove
@@ -66,6 +77,7 @@ router.delete(
 
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/favorites',
+  withApiKey,
   withMerchantParam,
   withUnfinishedAdvertisingParam,
   withBodyValidation(storeAdvertisingFavoriteSchema),
@@ -74,6 +86,7 @@ router.post(
 
 router.get(
   '/merchants/:merchantId/advertisings/:advertisingId/favorites',
+  withApiKey,
   withMerchantParam,
   withUnfinishedAdvertisingParam,
   AdvertisingFavoriteController.index
@@ -81,11 +94,13 @@ router.get(
 
 router.get(
   '/favorites',
+  withApiKey,
   AdvertisingFavoriteController.index
 )
 
 router.delete(
   '/merchants/:merchantId/advertisings/:advertisingId/favorites/:favoriteId',
+  withApiKey,
   withMerchantParam,
   withUnfinishedAdvertisingParam,
   withFavoriteParam,
@@ -94,6 +109,7 @@ router.delete(
 
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions',
+  withApiKey,
   withMerchantParam,
   withUnfinishedAdvertisingParam,
   withBodyValidation(storeAdvertisingQuestionSchema),
@@ -102,6 +118,7 @@ router.post(
 
 router.get(
   '/merchants/:merchantId/advertisings/:advertisingId/questions',
+  withApiKey,
   withMerchantParam,
   withAdvertisingParam,
   AdvertisingQuestionController.index
@@ -109,6 +126,7 @@ router.get(
 
 router.post(
   '/merchants/:merchantId/advertisings/:advertisingId/questions/:questionId/answers',
+  withApiKey,
   withMerchantParam,
   withUnfinishedAdvertisingParam,
   withQuestionParam,

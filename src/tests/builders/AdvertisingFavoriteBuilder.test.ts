@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import { advertisingFactory } from '@cig-platform/factories'
 
 import AdvertisingFavoriteBuilder from '@Builders/AdvertisingFavoriteBuilder'
