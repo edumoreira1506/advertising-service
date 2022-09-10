@@ -10,13 +10,15 @@ const merchantDocs = {
       method: 'post',
       title: 'Register merchant',
       description: 'Register merchant endpoint',
-      objectSchema: storeMerchantSchema
+      objectSchema: storeMerchantSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'get',
       title: 'Get merchants',
       description: 'Search merchants endpoint',
-      queryParams: [{ type: 'string', name: 'externalId' }]
+      queryParams: [{ type: 'string', name: 'externalId' }],
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     }
   ]),
   ...createDoc('/merchants/{merchantId}/rollback', ['Merchant'], [
@@ -24,6 +26,7 @@ const merchantDocs = {
       method: 'post',
       title: 'Rollback merchant register',
       description: 'Register merchant endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
@@ -33,6 +36,7 @@ const merchantDocs = {
       method: 'get',
       title: 'Get merchant',
       description: 'Get merchant endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
@@ -42,13 +46,15 @@ const merchantDocs = {
       method: 'post',
       title: 'Register advertising',
       description: 'Register advertising endpoint',
-      objectSchema: storeAdvertisingSchema
+      objectSchema: storeAdvertisingSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'get',
       title: 'Get advertisings',
       description: 'Get advertisings endpoint',
-      queryParams: [{ type: 'string', name: 'externalId' }]
+      queryParams: [{ type: 'string', name: 'externalId' }],
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     }
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }]
@@ -72,7 +78,8 @@ const merchantDocs = {
         { type: 'string', name: 'prices' },
         { type: 'string', name: 'favoriteExternalId' },
         { type: 'string', name: 'page' },
-      ]
+      ],
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     }
   ]),
   ...createDoc('/merchants/{merchantId}/advertisings/{advertisingId}', ['Advertising'], [
@@ -80,17 +87,20 @@ const merchantDocs = {
       method: 'delete',
       title: 'Remove advertising',
       description: 'Remove advertising endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'get',
       title: 'Get advertising',
       description: 'Get advertising endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'patch',
       title: 'Update advertising',
       description: 'Update advertising endpoint',
-      objectSchema: updateAdvertisingSchema
+      objectSchema: updateAdvertisingSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
@@ -100,12 +110,14 @@ const merchantDocs = {
       method: 'post',
       title: 'Register advertising question',
       description: 'Register advertising question endpoint',
-      objectSchema: storeAdvertisingQuestionSchema
+      objectSchema: storeAdvertisingQuestionSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'get',
       title: 'Get question and answers',
       description: 'Get question and answers endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     }
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
@@ -115,7 +127,8 @@ const merchantDocs = {
       method: 'post',
       title: 'Register advertising question answer',
       description: 'Register advertising question answer endpoint',
-      objectSchema: storeAdvertisingQuestionSchema
+      objectSchema: storeAdvertisingQuestionSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [
@@ -129,12 +142,14 @@ const merchantDocs = {
       method: 'post',
       title: 'Register advertising favorite',
       description: 'Register advertising favorite endpoint',
-      objectSchema: storeAdvertisingFavoriteSchema
+      objectSchema: storeAdvertisingFavoriteSchema,
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
     {
       method: 'get',
       title: 'Get advertising favorites',
       description: 'Get advertising favorites endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [{ type: 'string', name: 'merchantId' }, { type: 'string', name: 'advertisingId' }],
@@ -144,6 +159,7 @@ const merchantDocs = {
       method: 'delete',
       title: 'Delete advertising favorite',
       description: 'Delete advertising favorite endpoint',
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ], {
     pathVariables: [
@@ -157,7 +173,8 @@ const merchantDocs = {
       method: 'get',
       title: 'Get advertising favorites',
       description: 'Get advertising favorites endpoint',
-      queryParams: [{ type: 'string', name: 'externalId' }]
+      queryParams: [{ type: 'string', name: 'externalId' }],
+      headerParams: [{ type: 'string', name: 'Cig-Api-Key' }]
     },
   ]),
 }
